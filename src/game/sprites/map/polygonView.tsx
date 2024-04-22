@@ -1,5 +1,6 @@
 import React, {MouseEventHandler} from "react";
 import {utils} from "../../../utils";
+import {Box} from "@mui/material";
 
 export type Point = [number, number]
 
@@ -15,26 +16,48 @@ type PolygonProps = {
     textOnHover?: string,
     onClick?: MouseEventHandler
 }
+
 function PolygonView(props: PolygonProps) {
+
+    const minX = Math.min(...props.points.map((point) => point[0]))
+    const maxX = Math.max(...props.points.map((point) => point[0]))
+
+    const minY = Math.min(...props.points.map((point) => point[1]))
+    const maxY = Math.max(...props.points.map((point) => point[1]))
+
+    const width = maxX - minX
+    const height = maxY - minY
 
     let pointsStr = ''
     for (const point of props.points) {
-        pointsStr += `${Math.round(point[0] * props.scale)} ${Math.round(point[1] * props.scale)} `
+        pointsStr += `${Math.round(point[0] - minX)} ${Math.round(point[1] - minY)} `
     }
+
     return (
-        <polygon
-            style={{
-                position: 'relative',
+        <Box
+            sx={{
+                position: 'absolute',
+                marginLeft: minX/8,
+                marginTop: minY/8,
+                width: width,
+                height: height,
             }}
-            points={pointsStr.trim()}
-            stroke={props.borderStyle?.color ?? 'transparent'}
-            strokeWidth={props.borderStyle?.width ?? 0}
-            fill={props.color ?? 'black'}
             onClick={props.onClick}
-            opacity={props.opacity ?? 0.5}
         >
-            <title>{props.textOnHover ? utils.capitalize(props.textOnHover) : 'Polygone sans label'}</title>
-        </polygon>
+            <svg viewBox={`0 0 ${width} ${height}`}
+                 xmlns="http://www.w3.org/2000/svg"
+            >
+                <polygon
+                    points={pointsStr.trim()}
+                    stroke={props.borderStyle?.color ?? 'transparent'}
+                    strokeWidth={props.borderStyle?.width ?? 0}
+                    fill={props.color ?? 'black'}
+                    opacity={0.5 ?? props.opacity ?? 0.5}
+                >
+                    <title>{props.textOnHover ? utils.capitalize(props.textOnHover) : 'Polygone sans label'}</title>
+                </polygon>
+            </svg>
+        </Box>
     )
 }
 

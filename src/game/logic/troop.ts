@@ -63,7 +63,9 @@ export class Troop {
 
     public regionName: RegionName;
 
-    public supplyChain: SupplyChain[]
+    public supplyChain: SupplyChain[];
+
+    public supplied: boolean; // Redundant with supplyChain, but easier to listen to
 
     public constructor(props: TroopProps, regionName: RegionName) {
         this.props = props;
@@ -78,6 +80,7 @@ export class Troop {
                 )
             }).flat()
         }
+        this.supplied = this.isSupplied();
         this.notifyAdjacentOfSupply([this])
     }
 
@@ -133,6 +136,7 @@ export class Troop {
                 === JSON.stringify(supplyChain.via.map((troop) => troop.regionName)))
         ) {
             this.supplyChain.push(supplyChain)
+            this.supplied = this.isSupplied();
         }
         if (this.supplyChain.length === 1) {
             // We notify only if the troop goes from unsupplied to supplied
@@ -150,6 +154,7 @@ export class Troop {
 
     public removeNodeFromSupplyChain(troop: Troop) {
         this.supplyChain = this.supplyChain.filter((sc) => !sc.via.includes(troop))
+        this.supplied = this.isSupplied();
     }
 
 }

@@ -13,8 +13,7 @@ function TroopView ({troop, scale}: TroopViewProps) {
     const [supplied, setSupplied] = useState(troop.isSupplied());
     useEffect(() => {
         setSupplied(troop.isSupplied())
-        console.log(troop.regionName)
-    }, [troop, troop.supplyChain, troop.supplyChain.length])
+    }, [troop, troop.supplied])
 
     const anchor = getRegion(troop.regionName).props.anchor
     const troopPolygon: Point[] = TROOP_POLYGONS[troop.props.type].map((point) => [point[0] + anchor[0], point[1] + anchor[1]]);
@@ -29,10 +28,6 @@ function TroopView ({troop, scale}: TroopViewProps) {
         }}
         textOnHover={troop.toString()}
         opacity={1}
-        onClick={(e) => {
-            console.log('pouet');
-            e.stopPropagation();
-        }}
     />
 }
 

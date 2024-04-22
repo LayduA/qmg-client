@@ -6,21 +6,22 @@ import RegionView from "./regionView";
 import {Region} from "../../logic/map/region";
 
 export type HighlightedRegion = {
-    regionName: RegionName
+    name: RegionName
     color?: string
 }
+
 function BoardView() {
     const [scale, setScale] = React.useState(1);
     const [highlightedRegions, setHighlightedRegions] = React.useState(new Array<HighlightedRegion>());
 
-    const addHighlightedRegion = ({regionName, color}: HighlightedRegion): void => {
-        if (!highlightedRegions.map((hr) => hr.regionName).includes(regionName)) {
-            setHighlightedRegions(highlightedRegions.concat({regionName, color}));
+    const addHighlightedRegion = ({name, color}: HighlightedRegion): void => {
+        if (!highlightedRegions.map((hr) => hr.name).includes(name)) {
+            setHighlightedRegions(highlightedRegions.concat({name: name, color}));
         }
     }
 
-    const removeHighlightedRegion = ({regionName, color}: HighlightedRegion): void => {
-        setHighlightedRegions(highlightedRegions.filter((highlightedRegion) => highlightedRegion.regionName !== regionName));
+    const removeHighlightedRegion = ({name, color}: HighlightedRegion): void => {
+        setHighlightedRegions(highlightedRegions.filter((highlightedRegion) => highlightedRegion.name !== name));
     }
 
     return (
@@ -30,27 +31,22 @@ function BoardView() {
                 backgroundSize: 'cover',
                 width: `${Math.round(scale * 1608)}px`,
                 height: `${Math.round(scale * 856)}px`,
-                display: 'flex'
             }}
-            onClick={() => setScale(scale + 0.1)}
+            //onClick={() => setScale(scale + 0.1)}
         >
-            <svg viewBox={`0 0 ${Math.round(scale * 1608)} ${Math.round(scale * 856)}`}
-                 xmlns="http://www.w3.org/2000/svg">
-                {board.map((region: Region) => {
+            {board.map((region: Region) => {
                     return <RegionView
                         region={region}
                         scale={scale}
                         key={`regionview-${region.props.name}`}
-                        highlightColor={highlightedRegions.reduce((acc: string|undefined, {regionName, color}) => {
-                            if (!acc && regionName === region.props.name) {
-                                acc = color;
-                            }
-                            return acc;
-                        }, undefined)}
+                        highlightColor={
+                            highlightedRegions
+                                .find((highlightedRegion) => highlightedRegion.name === region.props.name)?.color ??
+                            undefined
+                        }
                         updateHighlightedRegions={[addHighlightedRegion, removeHighlightedRegion]}
                     />;
-                })}
-            </svg>
+            })}
         </Box>
     );
 }
