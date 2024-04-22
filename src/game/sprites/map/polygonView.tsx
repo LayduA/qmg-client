@@ -37,12 +37,11 @@ function PolygonView(props: PolygonProps) {
         <Box
             sx={{
                 position: 'absolute',
-                marginLeft: minX/8,
+                marginLeft: minX/8, // TODO: ??????
                 marginTop: minY/8,
                 width: width,
                 height: height,
             }}
-            onClick={props.onClick}
         >
             <svg viewBox={`0 0 ${width} ${height}`}
                  xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +51,8 @@ function PolygonView(props: PolygonProps) {
                     stroke={props.borderStyle?.color ?? 'transparent'}
                     strokeWidth={props.borderStyle?.width ?? 0}
                     fill={props.color ?? 'black'}
-                    opacity={0.5 ?? props.opacity ?? 0.5}
+                    opacity={props.opacity ?? 0.5}
+                    onClick={props.onClick}
                 >
                     <title>{props.textOnHover ? utils.capitalize(props.textOnHover) : 'Polygone sans label'}</title>
                 </polygon>

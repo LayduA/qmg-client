@@ -5,9 +5,10 @@ import {Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, Di
 import Slide from "@mui/material/Slide";
 import {TransitionProps} from "@mui/material/transitions";
 import {HighlightedRegion} from "./boardView";
-import {TroopType} from "../../logic/troop";
+import {Troop, TroopType} from "../../logic/troop";
 import TroopView from "../troopView";
-import {NATIONS} from "../../logic/player/nation";
+import {NationName, NATIONS} from "../../logic/player/nation";
+import {RegionName} from "../../logic/map/board";
 
 type RegionViewProps = {
     region: Region
@@ -27,13 +28,7 @@ const Transition = forwardRef(function Transition(
 
 function RegionView({region, scale, highlightColor, updateHighlightedRegions}: RegionViewProps) {
     const [open, setOpen] = useState(false);
-    const [troops, setTroops] = useState(region.troops)
 
-    const name = region.props.name
-    const suppliedTroops = troops.map((troop) => troop.supplied);
-    useEffect(() => {
-        //console.log(`${name} : ${troops.length}`)
-    }, [name, suppliedTroops, troops, troops.length])
     const [addHighlightedRegion, removeHighlightedRegion] = updateHighlightedRegions;
     const handleClose = (event: MouseEvent<any>) => {
         event.stopPropagation();
@@ -46,39 +41,39 @@ function RegionView({region, scale, highlightColor, updateHighlightedRegions}: R
     };
 
     return (
-        <>
-            {troops.map((troop) => (
+        <div>
+            <PolygonView
+                points={region.props.points}
+                scale={scale}
+                color={highlightColor ?? region.props.color}
+                opacity={0.4 ?? highlightColor ? 0.5 : 0}
+                textOnHover={region.props.name}
+                onClick={(event) => {
+                    //handleOpen();
+                    if (region.troops.length === 0) {
+                        region.addTroop({
+                            nation: region.props.name === RegionName.EASTERN_UNITED_STATES ? NATIONS[NationName.GERMANY] : NATIONS[NationName.GERMANY],
+                            type: region.props.isOcean ? TroopType.NAVY : TroopType.ARMY});
+                        addHighlightedRegion({name: region.props.name, color: 'white'});
+                        removeHighlightedRegion({name: region.props.name});
+                        //setTroops(region.troops)
+                    } else {
+                        region.removeTroop(region.troops[0].props)
+                        addHighlightedRegion({name: region.props.name, color: 'white'});
+                        removeHighlightedRegion({name: region.props.name});
+
+                        //setTroops(region.getTroops(NATIONS))
+                    }
+                }}/>
+            {region.troops.map((troop) => (
                 <TroopView
                     key={`troop-${region.props.name}-${troop.props.nation}`}
                     troop={troop}
                     scale={scale}
                 />
             ))}
-            <PolygonView
-                points={region.props.points}
-                scale={scale}
-                color={highlightColor ?? 'black'}
-                opacity={highlightColor ? 0.5 : 0}
-                textOnHover={region.props.name}
-                onClick={(event) => {
-                    //handleOpen();
-                    if (troops.length === 0) {
-                        region.addTroop({nation: NATIONS[0], type: TroopType.ARMY});
-                        addHighlightedRegion({name: region.props.name, color: 'white'});
-                        removeHighlightedRegion({name: region.props.name});
-                        //setTroops(region.troops)
-                        //console.log(region.troops)
-                    } else {
-                        region.removeTroop(troops[0].props)
-                        removeHighlightedRegion({name: region.props.name});
-
-                        //setTroops(region.getTroops(NATIONS))
-                    }
-                }}/>
             {getDialog(open, region, handleClose)}
-
-
-        </>
+        </div>
     );
 }
 

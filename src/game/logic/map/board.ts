@@ -7,15 +7,20 @@ export enum RegionName {
     RUSSIA = 'Russie',
     UKRAINE = 'Ukraine',
     KAZAKHSTAN = 'Kazakhstan',
-    SIBERIA = 'Siberia',
+    SIBERIA = 'Sibérie',
+    NORTH_ATLANTIC = 'Atlantique Nord',
+    SOUTH_ATLANTIC = 'Atlantique Sud',
+    NORTH_SEA = 'Mer du Nord',
     DUMMY = 'DUMMY',
+    EASTERN_UNITED_STATES = 'Côte Est des États-Unis',
+    LATIN_AMERICA = 'Amérique Latine'
 }
 
 const regionsInfo: RegionProps[] = [
     {
         name: RegionName.WESTERN_EUROPE,
-        neighbors: [RegionName.GERMANY],
-        color: 'green',
+        neighbors: [RegionName.GERMANY, RegionName.NORTH_SEA],
+        color: 'DarkOliveGreen',
         isSupplyZone: true,
         isOcean: false,
         anchor: [495, 280],
@@ -110,7 +115,7 @@ const regionsInfo: RegionProps[] = [
     {
         name: RegionName.EASTERN_EUROPE,
         neighbors: [RegionName.GERMANY, RegionName.RUSSIA, RegionName.UKRAINE],
-        color: 'green',
+        color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
         anchor: [620, 215],
@@ -147,7 +152,7 @@ const regionsInfo: RegionProps[] = [
     {
         name: RegionName.RUSSIA,
         neighbors: [RegionName.EASTERN_EUROPE, RegionName.UKRAINE, RegionName.SIBERIA],
-        color: 'green',
+        color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
         anchor: [730, 150],
@@ -161,7 +166,7 @@ const regionsInfo: RegionProps[] = [
     {
         name: RegionName.UKRAINE,
         neighbors: [RegionName.EASTERN_EUROPE, RegionName.RUSSIA, RegionName.KAZAKHSTAN],
-        color: 'green',
+        color: 'DarkOliveGreen',
         isSupplyZone: true,
         isOcean: false,
         anchor: [730, 250],
@@ -175,7 +180,7 @@ const regionsInfo: RegionProps[] = [
     {
         name: RegionName.KAZAKHSTAN,
         neighbors: [RegionName.UKRAINE, RegionName.SIBERIA],
-        color: 'green',
+        color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
         anchor: [830, 250],
@@ -189,7 +194,7 @@ const regionsInfo: RegionProps[] = [
     {
         name: RegionName.SIBERIA,
         neighbors: [RegionName.KAZAKHSTAN, RegionName.RUSSIA],
-        color: 'green',
+        color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
         anchor: [880, 150],
@@ -200,11 +205,91 @@ const regionsInfo: RegionProps[] = [
             [830, 200]
         ]
     },
+    {
+        name: RegionName.NORTH_ATLANTIC,
+        neighbors: [RegionName.SOUTH_ATLANTIC, RegionName.NORTH_SEA, RegionName.EASTERN_UNITED_STATES, RegionName.LATIN_AMERICA],
+        color: 'blue',
+        isSupplyZone: false,
+        isOcean: true,
+        anchor: [250, 350],
+        points: [
+            [230, 300],
+            [330, 300],
+            [330, 400],
+            [230, 400]
+        ]
+    },
+    {
+        name: RegionName.NORTH_SEA,
+        neighbors: [RegionName.SOUTH_ATLANTIC, RegionName.WESTERN_EUROPE, RegionName.NORTH_ATLANTIC],
+        color: 'blue',
+        isSupplyZone: false,
+        isOcean: true,
+        anchor: [400, 250],
+        points: [
+            [380, 200],
+            [480, 200],
+            [480, 300],
+            [380, 300]
+        ]
+    },
+    {
+        name: RegionName.SOUTH_ATLANTIC,
+        neighbors: [RegionName.NORTH_SEA, RegionName.NORTH_ATLANTIC, RegionName.LATIN_AMERICA],
+        color: 'blue',
+        isSupplyZone: false,
+        isOcean: true,
+        anchor: [450, 650],
+        points: [
+            [400, 600],
+            [500, 600],
+            [500, 700],
+            [400, 700]
+        ]
+    },
+    {
+        name: RegionName.EASTERN_UNITED_STATES,
+        neighbors: [RegionName.NORTH_ATLANTIC],
+        color: 'blue',
+        isSupplyZone: true,
+        isOcean: false,
+        anchor: [150, 250],
+        points: [
+            [100, 200],
+            [200, 200],
+            [200, 300],
+            [100, 300]
+        ]
+    },
+
+    {
+        name: RegionName.LATIN_AMERICA,
+        neighbors: [RegionName.NORTH_ATLANTIC, RegionName.SOUTH_ATLANTIC],
+        color: 'DarkOliveGreen',
+        isSupplyZone: false,
+        isOcean: false,
+        anchor: [280, 550],
+        points: [
+            [230, 500],
+            [330, 500],
+            [330, 600],
+            [230, 600]
+        ]
+    },
 ];
 
 export type Board = Region[]
 export const board: Board = regionsInfo.map((props) => new Region(props));
 
+export function validateBoard(board: Board): void {
+    for (const region of board) {
+        for (const neighbor of region.getNeighbors()) {
+            if (!neighbor.getNeighbors().includes(region)){
+                throw new Error(`Asymmetric neighbors : ${region.props.name} is not in ${neighbor.props.name}'s neighbors`);
+            }
+        }
+    }
+}
 export function getRegion(regionName: RegionName): Region {
     return getRegions([regionName])[0];
 }
