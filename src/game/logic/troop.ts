@@ -48,6 +48,24 @@ export const TROOP_POLYGONS: Point[][] = [
     []
 ]
 
+export class SupplyLink {
+    public nodes: [RegionName, RegionName]
+    public isAnchor: boolean
+
+    public constructor(t1: RegionName, t2: RegionName, isAnchor: boolean) {
+        this.nodes = [t1, t2];
+        this.isAnchor = isAnchor;
+    }
+
+    public reverseToString() {
+        return JSON.stringify([this.nodes[1], this.nodes[0]]);
+    }
+
+    public toString() {
+        return JSON.stringify(this.nodes);
+    }
+}
+
 export type TroopProps = {
     nationName: NationName,
     type: TroopType,
@@ -68,20 +86,31 @@ export class Troop {
     }
 
 
-    public tree(allTroops: Troop[], excludes: Troop[]): Troop[] {
+    public tree(allTroops: Troop[], tree: Troop[], edges: SupplyLink[]): Troop[] {
+
+        tree.push(this)
 
         if (this.props.type === TroopType.NAVY) {
-            this.supplied = this.getAnchors(allTroops, []).length > 0;
-        } else {
-            this.supplied = true;
-        }
-        excludes.push(this)
-        if (this.supplied) {
-            for (const troop of this.getAdjacent(allTroops, excludes).filter((troop) => !troop.isOnSupplyZone())) {
-                troop.tree(allTroops, excludes)
+            if (this.getAnchors(allTroops, []).length === 0) {
+                this.supplied = false;
+                return tree;
+            }
+            for (const anchor of this.getAnchors(allTroops, []).filter(troop => troop.props.nationName !== this.props.nationName)) {
+                edges.push(new SupplyLink(anchor.regionName, this.regionName, true))
             }
         }
-        return Array.from(new Set(excludes));
+        this.supplied = true;
+
+        for (const troop of this
+            .getAdjacent(allTroops, tree)
+            .filter((troop) => !troop.isOnSupplyZone() && !tree.includes(troop))) {
+            troop.tree(allTroops, tree, edges)
+            const newEdge = new SupplyLink(this.regionName, troop.regionName, false)
+            if (!edges.some(edge => edge.toString() === newEdge.toString() || edge.toString() === newEdge.reverseToString())) {
+                edges.push(newEdge);
+            }
+        }
+        return tree;
     }
 
     public isOnSupplyZone(): boolean {
@@ -92,8 +121,8 @@ export class Troop {
         return allTroops
             .filter((troop) => !excluded.includes(troop) && troop.props.nationName === this.props.nationName &&
                 getRegion(this.regionName)
-                .getNeighbors()
-                .map((reg) => reg.props.name).includes(troop.regionName));
+                    .getNeighbors()
+                    .map((reg) => reg.props.name).includes(troop.regionName));
     }
 
     private getAdjacentAllies(allTroops: Troop[], excluded: Troop[]): Troop[] {
@@ -111,8 +140,8 @@ export class Troop {
 
     public toString(): string {
         return TroopType[this.props.type] + " of nation "
-            + NationName[this.props.nationName]
-            + `\n(${this.supplied ? '' : 'NOT ' }supplied)`
+            + this.props.nationName
+            + `\n(${this.supplied ? '' : 'NOT '}supplied)`
     }
 
 

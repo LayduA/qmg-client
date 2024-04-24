@@ -1,8 +1,10 @@
+import {Nation} from "./nation";
+
 export class Player {
-    public readonly nations: NationName[];
+    public readonly nations: Nation[];
     public readonly name?: string
 
-    constructor(nations: NationName[], name?: string) {
+    constructor(nations: Nation[], name?: string) {
         this.nations = nations;
         if (name) this.name = name;
     }

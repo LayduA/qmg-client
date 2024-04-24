@@ -25,11 +25,12 @@ function TroopView ({troop, scale, update}: TroopViewProps) {
         scale={scale}
         color={Nation.getNation(troop.props.nationName).color}
         borderStyle={{
-            color: supplied ? 'green': 'black',
-            width: 2.5
+            color: supplied ? 'black' : 'darkred',
+            width: 1.5
         }}
         textOnHover={troop.toString()}
         opacity={1}
+        centered={true}
     />
 }
 

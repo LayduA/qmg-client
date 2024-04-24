@@ -23,7 +23,7 @@ const regionsInfo: RegionProps[] = [
         color: 'DarkOliveGreen',
         isSupplyZone: true,
         isOcean: false,
-        anchor: [495, 280],
+        anchor: [520, 280],
         points: [
             [573, 161],
             [577, 163],
@@ -75,7 +75,7 @@ const regionsInfo: RegionProps[] = [
         color: 'grey',
         isSupplyZone: true,
         isOcean: false,
-        anchor: [560, 250],
+        anchor: [590, 250],
         points: [
             [572, 194],
             [578, 195],
@@ -118,7 +118,7 @@ const regionsInfo: RegionProps[] = [
         color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
-        anchor: [620, 215],
+        anchor: [650, 215],
         points: [
             [645, 261],
             [632, 262],
@@ -183,7 +183,7 @@ const regionsInfo: RegionProps[] = [
         color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
-        anchor: [830, 250],
+        anchor: [830, 255],
         points: [
             [800, 200],
             [900, 200],
@@ -197,7 +197,7 @@ const regionsInfo: RegionProps[] = [
         color: 'DarkOliveGreen',
         isSupplyZone: false,
         isOcean: false,
-        anchor: [880, 150],
+        anchor: [880, 160],
         points: [
             [830, 100],
             [930, 100],

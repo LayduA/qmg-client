@@ -2,12 +2,12 @@ import {Troop, TroopType} from "../troop";
 import {RegionName} from "../map/board";
 
 export enum NationName {
-    GERMANY,
-    UK,
-    JAPAN,
-    USSR,
-    ITALY,
-    USA
+    GERMANY = "Allemagne",
+    UK = "Royaume-Uni",
+    JAPAN = "Japon",
+    USSR = "URSS",
+    ITALY = "Italie",
+    USA = "États-Unis"
 }
 
 enum Team {
@@ -30,18 +30,15 @@ export class Nation {
         this.color = color;
     }
 
-    public static NATIONS: Nation[] = [];
+    public static NATIONS: Nation[] = [
+        new Nation(NationName.GERMANY, 'grey', Team.AXIS, []),
+        new Nation(NationName.UK, 'goldenrod', Team.ALLIES, []),
+        new Nation(NationName.JAPAN, 'ivory', Team.AXIS, []),
+        new Nation(NationName.USSR, 'firebrick', Team.ALLIES, []),
+        new Nation(NationName.ITALY, 'rebeccapurple', Team.AXIS, []),
+        new Nation(NationName.USA, 'green', Team.ALLIES, []),
+    ];
 
-    public static initNations() {
-        this.NATIONS = [
-            new Nation(NationName.GERMANY, 'darkgrey', Team.AXIS, []),
-            new Nation(NationName.UK, 'yellow', Team.ALLIES, []),
-            new Nation(NationName.JAPAN, 'lightgrey', Team.AXIS, []),
-            new Nation(NationName.USSR, 'red', Team.ALLIES, []),
-            new Nation(NationName.ITALY, 'purple', Team.AXIS, []),
-            new Nation(NationName.USA, 'green', Team.ALLIES, []),
-        ];
-    }
     public addTroop(type: TroopType, regionName: RegionName){
         this.army.push(new Troop({nationName: this.name, type: type}, regionName))
     }

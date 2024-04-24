@@ -20,7 +20,7 @@ function RegionView({region, scale, highlightColor, setUpdate, addTroop}: Region
                 points={region.props.points}
                 scale={scale}
                 color={highlightColor ?? region.props.color}
-                opacity={0.4 ?? highlightColor ? 0.5 : 0}
+                opacity={highlightColor ? 0.5 : 0}
                 textOnHover={region.props.name}
                 onClick={(event) => {
                     addTroop(region)
