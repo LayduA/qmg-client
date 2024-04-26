@@ -8,11 +8,10 @@ type RegionViewProps = {
     scale: number
     highlightColor?: string
     updateHighlightedRegions: [addHighlightedRegion: (region: HighlightedRegion) => void, removeHighlightedRegion: (region: HighlightedRegion) => void]
-    addTroop: any
-    setUpdate: any
+    addTroop: Function
 }
 
-function RegionView({region, scale, highlightColor, setUpdate, addTroop}: RegionViewProps) {
+function RegionView({region, scale, highlightColor, addTroop}: RegionViewProps) {
 
     return (
         <div>
@@ -24,7 +23,6 @@ function RegionView({region, scale, highlightColor, setUpdate, addTroop}: Region
                 textOnHover={region.props.name}
                 onClick={(event) => {
                     addTroop(region)
-                    setUpdate(true);
                 }}/>
         </div>
     );

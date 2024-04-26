@@ -1,25 +1,27 @@
 import {Box, Typography} from "@mui/material";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
-import {Nation} from "../logic/player/nation";
+import {NationState} from "../logic/state/nationState";
 
-enum flags{
-    GERMANY = '\uD83D\uDE00'
+enum Flag {
+    GERMANY = 'fi fi de'
 }
 
 type PlayerProps = {
     name?: string,
-    nations: Nation[]
+    nations: NationState[]
 }
-function PlayerCard({ name, nations }: PlayerProps) {
+
+function PlayerCard({name, nations}: PlayerProps) {
     return (
         <Box
             key={`player-card-${name ?? nations[0]}`}
             sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '2%'
-        }}>
-            <Typography variant={'h2'}> {name ?? JSON.stringify(nations)}</Typography><span className={'fi fi-de'}></span>
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '2%'
+            }}>
+            <Typography variant={'h2'}> {name ?? JSON.stringify(nations)}</Typography><span
+            className={Flag.GERMANY}></span>
         </Box>
     )
 }

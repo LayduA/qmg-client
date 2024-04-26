@@ -1,6 +1,21 @@
 import {LogicElement} from "../logicElement";
 import {Point} from "../../sprites/map/polygonView";
-import {board, RegionName} from "./board";
+
+export enum RegionName {
+    GERMANY = 'Allemagne',
+    WESTERN_EUROPE = 'Europe de l\'Ouest',
+    EASTERN_EUROPE = 'Europe de l\'Est',
+    RUSSIA = 'Russie',
+    UKRAINE = 'Ukraine',
+    KAZAKHSTAN = 'Kazakhstan',
+    SIBERIA = 'Sibérie',
+    NORTH_ATLANTIC = 'Atlantique Nord',
+    SOUTH_ATLANTIC = 'Atlantique Sud',
+    NORTH_SEA = 'Mer du Nord',
+    DUMMY = 'DUMMY',
+    EASTERN_UNITED_STATES = 'Côte Est des États-Unis',
+    LATIN_AMERICA = 'Amérique Latine'
+}
 
 export type RegionProps = {
     name: RegionName
@@ -31,8 +46,5 @@ export class Region implements LogicElement {
         }
     }
 
-    public getNeighbors(): Region[] {
-        return board.filter((region) => this.props.neighbors.includes(region.props.name));
-    }
-
 }
+

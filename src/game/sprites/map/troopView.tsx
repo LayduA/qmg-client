@@ -1,29 +1,28 @@
-import {Troop, TROOP_POLYGONS} from "../logic/troop";
-import PolygonView, {Point} from "./map/polygonView";
+import {Troop, TROOP_POLYGONS} from "../../logic/map/troop";
+import PolygonView, {Point} from "./polygonView";
 import {useEffect, useState} from "react";
-import {getRegion} from "../logic/map/board";
-import {Nation} from "../logic/player/nation";
+import {GameState} from "../../logic/state/gameState";
 
 type TroopViewProps = {
+    gameState: GameState
     troop: Troop
     scale: number
-    update: boolean
 }
 
-function TroopView ({troop, scale, update}: TroopViewProps) {
+function TroopView({gameState, troop, scale}: TroopViewProps) {
 
     const [supplied, setSupplied] = useState(false);
     useEffect(() => {
         setSupplied(troop.supplied)
     }, [troop, troop.supplied])
 
-    const anchor = getRegion(troop.regionName).props.anchor
+    const anchor = gameState.board.getRegion(troop.regionName).props.anchor
     const troopPolygon: Point[] = TROOP_POLYGONS[troop.props.type].map((point) => [point[0] + anchor[0], point[1] + anchor[1]]);
 
     return <PolygonView
         points={troopPolygon}
         scale={scale}
-        color={Nation.getNation(troop.props.nationName).color}
+        color={gameState.getNation(troop.props.nationName).props.color}
         borderStyle={{
             color: supplied ? 'black' : 'darkred',
             width: 1.5

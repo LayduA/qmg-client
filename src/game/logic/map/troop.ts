@@ -1,6 +1,7 @@
-import {Point} from "../sprites/map/polygonView";
-import {Nation, NationName} from "./player/nation";
-import {getRegion, RegionName} from "./map/board";
+import {Point} from "../../sprites/map/polygonView";
+import {NationName} from "../state/nationState";
+import {GameState} from "../state/gameState";
+import {RegionName} from "./region";
 
 export enum TroopType {
     ARMY,
@@ -86,25 +87,25 @@ export class Troop {
     }
 
 
-    public tree(allTroops: Troop[], tree: Troop[], edges: SupplyLink[]): Troop[] {
+    public tree(state: GameState, tree: Troop[], edges: SupplyLink[]): Troop[] {
 
         tree.push(this)
 
         if (this.props.type === TroopType.NAVY) {
-            if (this.getAnchors(allTroops, []).length === 0) {
+            if (this.getAnchors(state).length === 0) {
                 this.supplied = false;
                 return tree;
             }
-            for (const anchor of this.getAnchors(allTroops, []).filter(troop => troop.props.nationName !== this.props.nationName)) {
+            for (const anchor of this.getAnchors(state).filter(troop => troop.props.nationName !== this.props.nationName)) {
                 edges.push(new SupplyLink(anchor.regionName, this.regionName, true))
             }
         }
         this.supplied = true;
 
         for (const troop of this
-            .getAdjacent(allTroops, tree)
-            .filter((troop) => !troop.isOnSupplyZone() && !tree.includes(troop))) {
-            troop.tree(allTroops, tree, edges)
+            .getAdjacent(state, tree)
+            .filter((troop) => !troop.isOnSupplyZone(state) && !tree.includes(troop))) {
+            troop.tree(state, tree, edges)
             const newEdge = new SupplyLink(this.regionName, troop.regionName, false)
             if (!edges.some(edge => edge.toString() === newEdge.toString() || edge.toString() === newEdge.reverseToString())) {
                 edges.push(newEdge);
@@ -113,27 +114,24 @@ export class Troop {
         return tree;
     }
 
-    public isOnSupplyZone(): boolean {
-        return getRegion(this.regionName).props.isSupplyZone;
+    public isOnSupplyZone(state: GameState): boolean {
+        return state.board.getRegion(this.regionName).props.isSupplyZone;
     }
 
-    private getAdjacent(allTroops: Troop[], excluded: Troop[]): Troop[] {
-        return allTroops
-            .filter((troop) => !excluded.includes(troop) && troop.props.nationName === this.props.nationName &&
-                getRegion(this.regionName)
-                    .getNeighbors()
-                    .map((reg) => reg.props.name).includes(troop.regionName));
+    private getAdjacent(state: GameState, excluded: Troop[]): Troop[] {
+        return state.getAllTroops(this.props.nationName).filter((troop) => !excluded.includes(troop) &&
+            state.board.getNeighbors(this.regionName).map((reg) => reg.props.name).includes(troop.regionName));
     }
 
-    private getAdjacentAllies(allTroops: Troop[], excluded: Troop[]): Troop[] {
-        const allAllies = Nation.getNation(this.props.nationName).getTeam().map(nation => nation.army).flat();
-        const adjacentRegionNames = getRegion(this.regionName).getNeighbors().map((reg) => reg.props.name);
+    private getAdjacentAllies(state: GameState): Troop[] {
+        const allAllies = state.getNationTeam(this.props.nationName).map(nation => nation.army).flat();
+        const adjacentRegionNames = state.board.getNeighbors(this.regionName).map((reg) => reg.props.name);
         return allAllies.filter((troop) => adjacentRegionNames.includes(troop.regionName));
     }
 
-    private getAnchors(allTroops: Troop[], excluded: Troop[]): Troop[] {
+    private getAnchors(state: GameState): Troop[] {
         if (this.props.type !== TroopType.NAVY) return [];
-        return this.getAdjacentAllies(allTroops, excluded)
+        return this.getAdjacentAllies(state)
             .filter((troop) => troop.props.type === TroopType.ARMY && troop.supplied);
     }
 
