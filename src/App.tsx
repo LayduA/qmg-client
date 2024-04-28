@@ -6,6 +6,7 @@ import PlayerCard from "./game/sprites/playerCard";
 import Board from "./game/sprites/map/boardView";
 import {GameState} from "./game/logic/state/gameState";
 import {Update} from "./game/logic/state/update/update";
+import {NationName} from "./game/logic/state/nationState";
 
 function App() {
 
@@ -19,13 +20,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <Board gameState={gameState} updateGameState={updateGameState}/>
-                {gameState.players.map((player: Player) => {
-                    return <PlayerCard
-                        key={`player-card-${player.name ?? player.nations[0].toString()}`}
-                        name={player.name ?? player.nations[0].toString()}
-                        nations={player.nations}
-                    />
-                })}
+                <PlayerCard gameState={gameState} playerName={'Adrien'} />
             </header>
         </div>
     );

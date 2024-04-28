@@ -1,6 +1,6 @@
 import backgroundImg from '../../../resources/images/board.jpg'
 import {Box} from "@mui/material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import RegionView from "./regionView";
 import {Region, RegionName} from "../../logic/map/region";
 import {Troop, TroopType} from "../../logic/map/troop";
@@ -17,13 +17,9 @@ export type HighlightedRegion = {
 
 function BoardView({gameState, updateGameState}: { gameState: GameState, updateGameState: Function }) {
     const [scale] = React.useState(1);
-    const [highlightedRegions, setHighlightedRegions] = React.useState(new Array<HighlightedRegion>());
+    const [highlightedRegions, setHighlightedRegions] =
+        React.useState(gameState.getNation(NationName.GERMANY).getArmyRegions(gameState).map(r => ({name: r, color:'green'} as HighlightedRegion)));
     const [playingNation, setPlayingNation] = useState(gameState.getNation(NationName.GERMANY));
-    const addHighlightedRegion = ({name, color}: HighlightedRegion): void => {
-        if (!highlightedRegions.map((hr) => hr.name).includes(name)) {
-            setHighlightedRegions(highlightedRegions.concat({name: name, color}));
-        }
-    }
 
     const addTroop = (region: Region) => {
         if (!gameState.getNation(playingNation.props.name).army.some((troop: Troop) => troop.regionName === region.props.name)){
@@ -33,9 +29,9 @@ function BoardView({gameState, updateGameState}: { gameState: GameState, updateG
         }
     }
 
-    const removeHighlightedRegion = ({name, color}: HighlightedRegion): void => {
-        setHighlightedRegions(highlightedRegions.filter((highlightedRegion) => highlightedRegion.name !== name));
-    }
+    useEffect(() => {
+        setHighlightedRegions(gameState.getNation(NationName.GERMANY).getArmyRegions(gameState).map(r => ({name:r, color:'green'})));
+    }, [gameState]);
 
     return (
         <Box
@@ -50,6 +46,7 @@ function BoardView({gameState, updateGameState}: { gameState: GameState, updateG
             <div className={'Prout'}>
                 <TeamPicker setNation={setPlayingNation} gameState={gameState}/>
             </div>
+            {useArmies(gameState, scale)}
             {gameState.board.regions.map((region: Region) => {
                 return <RegionView
                     region={region}
@@ -60,11 +57,10 @@ function BoardView({gameState, updateGameState}: { gameState: GameState, updateG
                             .find((highlightedRegion) => highlightedRegion.name === region.props.name)?.color ??
                         undefined
                     }
-                    updateHighlightedRegions={[addHighlightedRegion, removeHighlightedRegion]}
                     addTroop={addTroop}
                 />;
             })}
-            {useArmies(gameState, scale)}
+
 
         </Box>
     );

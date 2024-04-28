@@ -7,7 +7,6 @@ type RegionViewProps = {
     region: Region
     scale: number
     highlightColor?: string
-    updateHighlightedRegions: [addHighlightedRegion: (region: HighlightedRegion) => void, removeHighlightedRegion: (region: HighlightedRegion) => void]
     addTroop: Function
 }
 

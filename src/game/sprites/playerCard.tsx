@@ -1,27 +1,54 @@
 import {Box, Typography} from "@mui/material";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
-import {NationState} from "../logic/state/nationState";
+import {GameState} from "../logic/state/gameState";
+import PolygonView from "./map/polygonView";
+import {TROOP_POLYGONS, TroopType} from "../logic/map/troop";
+import {GermanyFlag} from "./flags";
 
-enum Flag {
-    GERMANY = 'fi fi de'
-}
+function PlayerCard({gameState, playerName}: { gameState: GameState, playerName: string }) {
 
-type PlayerProps = {
-    name?: string,
-    nations: NationState[]
-}
+    const player = gameState.players.filter(p => p.name === playerName)[0];
 
-function PlayerCard({name, nations}: PlayerProps) {
     return (
         <Box
-            key={`player-card-${name ?? nations[0]}`}
+            key={`player-card-${playerName}`}
             sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                gap: '2%'
+                gap: '2%',
+                alignItems: 'center'
             }}>
-            <Typography variant={'h2'}> {name ?? JSON.stringify(nations)}</Typography><span
-            className={Flag.GERMANY}></span>
+            <GermanyFlag sx={{width: 100, height: 100}}/>
+            <Typography variant={'h2'}> {playerName} </Typography>
+
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr',
+                    gap: '5px',
+                    margin: '5px',
+                }}
+            >
+                {[...Array(gameState.getNation(player.nations[0]).reserve[TroopType.ARMY])].map((e, i) =>
+                    <PolygonView points={TROOP_POLYGONS[TroopType.ARMY]} scale={1} relativePosition={true}
+                                 color={gameState.getNation(player.nations[0]).props.color}
+                                 borderStyle={{color: 'black', width: 2}} opacity={1} key={`army-${player.name}-${i}`}/>
+                )}
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '5px',
+                    margin: '5px',
+                }}
+            >
+                {[...Array(gameState.getNation(player.nations[0]).reserve[TroopType.NAVY])].map((e, i) =>
+                    <PolygonView points={TROOP_POLYGONS[TroopType.NAVY]} scale={1} relativePosition={true}
+                                 color={gameState.getNation(player.nations[0]).props.color}
+                                 borderStyle={{color: 'black', width: 2}} opacity={1} key={`navy-${player.name}-${i}`}/>
+                )}
+            </Box>
         </Box>
     )
 }

@@ -17,6 +17,7 @@ type PolygonProps = {
     onClick?: MouseEventHandler
     centered?: boolean
     lineOnly?: boolean
+    relativePosition?: boolean
 }
 
 function PolygonView(props: PolygonProps) {
@@ -40,7 +41,7 @@ function PolygonView(props: PolygonProps) {
     return (
         <Box
             sx={{
-                position: 'absolute',
+                position: props.relativePosition ? 'relative' : 'absolute',
                 marginLeft: (minX) / 8 - (centered ? width / 16 : 0), // TODO: ??????
                 marginTop: (minY) / 8 - (centered ? height / 16 : 0),
                 width: width,

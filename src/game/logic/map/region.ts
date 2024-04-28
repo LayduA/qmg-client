@@ -1,5 +1,7 @@
 import {LogicElement} from "../logicElement";
 import {Point} from "../../sprites/map/polygonView";
+import {GameState} from "../state/gameState";
+import {Troop} from "./troop";
 
 export enum RegionName {
     GERMANY = 'Allemagne',
@@ -44,6 +46,10 @@ export class Region implements LogicElement {
             isSupplyZone: false,
             isOcean: false,
         }
+    }
+
+    public getOccupiers(state: GameState): Troop[] {
+        return state.nations.map(n => n.army).map(army => army.filter(t => t.regionName === this.props.name)).flat()
     }
 
 }
