@@ -2,6 +2,7 @@ import {Troop, TroopType} from "../map/troop";
 import {RegionName} from "../map/region";
 import {GameState} from "./gameState";
 import {HighlightedRegion} from "../../sprites/map/boardView";
+import {Deck} from "../player/card";
 
 export enum NationName {
     GERMANY = "Allemagne",
@@ -37,15 +38,28 @@ export class NationState {
     army: Army;
     reserve: Reserve;
 
+    hand: Deck;
+
+    drawDeck: Deck;
+    discardDeck: Deck;
+    statusDeck: Deck;
+    responseDeck: Deck;
+
+
     constructor(props: NationProps, army: Army, reserve?: Reserve) {
         this.props = props
         this.army = army;
         this.reserve = reserve ?? this.buildReserve();
+        this.hand = Deck.buildDeck(this.props.name);
+        this.drawDeck = Deck.buildDeck(this.props.name);
+        this.discardDeck = new Deck([]);
+        this.statusDeck = new Deck([]);
+        this.responseDeck = new Deck([]);
     }
 
     public getArmyRegions(state: GameState): RegionName[] {
         const candidates: RegionName[] = [];
-        for (const troop of this.army) {
+        for (const troop of this.army.filter(t => t.supplied)) {
             for (const region of state.board.getNeighbors(troop.regionName).filter(region => !region.props.isOcean).concat(state.board.getRegion(this.props.capital))) {
                 if (candidates.includes(region.props.name)) continue;
                 const occupiers = region.getOccupiers(state);
