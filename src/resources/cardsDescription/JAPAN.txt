@@ -1,0 +1,30 @@
+AND -> order is not enforced, (AB, BA, A, B, 0)
+THEN -> order is enforced, but any combination can happen (AB, A, B, 0)
+TO -> Second can only be made after the first (AB), (A), (0)
+OR -> XOR (A, B)
+
+JAPAN
+4 build army, 3 land battle, 6 build navy, 4 sea battle
+
+ECONOMIC WARFARE x 2
+	- Submarines (A): EFFECT: UK DISCARDS top 1 from draw THEN GAIN +2
+	- Submarines (B): EFFECT: US DISCARDS top 1 from draw THEN GAIN +2
+
+RESPONSE x 11
+	- Banzai Charge: WHEN: Japan BATTLES on land. EFFECT: BATTLE another army in the same or adjacent space.
+	- Battleship Repair: WHEN: anytime. EFFECT: PROTECT a Japanese navy for 1 turn.
+	- China Offensive: WHEN: Japan BATTLES on China OR Szechuan OR Southeast Asia, EFFECT: BUILD 0-1 army in that region THEN build another in one of the 2 others
+	- Destroyer Transport: WHEN: Japan BATTLES on sea, EFFECT: BUILD 0 - 1 - 2 armies, adjacent to the space attacked
+	- Fall of Singapore: WHEN: Japan BATTLES on Southeast Asia, EFFECT: ELIMINATE 0-1 allied navy from South China Sea THEN RECRUIT a navy in the South China Sea.
+	- Kamikaze: WHEN: Allies BUILD or RECRUIT a navy adjacent to a Japanese troop, EFFECT: ELIMINATE this navy.
+	- Kwantung Army: WHEN: anytime. EFFECT: PROTECT a supplied Japanese army in China OR Szechuan OR Vladivostok for 1 turn.
+	- Operation Ketsu-Go: WHEN: anytime. EFFECT: PROTECT an army in Japan OR a navy in the Sea of Japan for 1 turn.
+	- Surprise Attack: WHEN: Japan BATTLES on sea. EFFECT: BATTLE another 0-1 navy THEN BATTLE 0-1 army.
+	- Special Naval Landing Forces: WHEN: Japan BUILDS a navy. EFFECT: BUILD 0-1-2 armies adjacent to that navy.
+	- Truk: WHEN: Anytime. EFFECT: For each Japanese navy, supply it for the turn.
+
+STATUS x 3
+	- Forward Bases: WHEN: a Japanese army is in Hawaii, Pacific Northwest or New Zealand during Victory Phase, EFFECT: GAIN +1 for each.
+	- Greater East Asia Co-prosperity Sphere: WHEN: a Japanese army is in Indonesia, New Guinea or Southeast Asia during Victory Phase, EFFECT: GAIN +1 for each.
+	- Imperial Design: WHEN: a Japanese army is in Iwo Jima OR the Philippines during Victory Phase, EFFECT: GAIN +1.
+

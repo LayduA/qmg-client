@@ -1,0 +1,30 @@
+AND -> order is not enforced, (AB, BA, A, B, 0)
+THEN -> order is enforced, but any combination can happen (AB, A, B, 0)
+TO -> Second can only be made after the first (AB), (A), (0)
+OR -> XOR (A, B)
+
+USSR
+8 build army, 6 land battle, 1 build navy, 2 sea battle
+
+EVENT x7
+	- General Winter: EFFECT: ELIMINATE 0 - 1 - 2 (total) armies from Ukraine OR Russia OR Moscow OR Siberia
+	- German-Soviet Treaty of Friendship, Cooperation, and Demarcation: BUILD an army in Eastern Europe AND BUILD an army in Ukraine
+	- Mao Tse-tung: ELIMINATE an army in China OR Szechuan.
+	- Tito's Partisans: ELIMINATE an Axis army in the Balkans THEN RECRUIT a Soviet OR UK army in the Balkans.
+	- Trans Siberian Railroad: EFFECT: FOREACH USSR army/navy, REMOVE it and BUILD it somewhere else
+	- Vasilevsky Takes Command in the Far East: RECRUIT an army in Vladivostok THEN ELIMINATE an army in China.
+
+RESPONSE x 4
+	- Leningrad: WHEN: anytime. EFFECT: PROTECT a Soviet army in Russia for 1 turn
+	- Moscow: WHEN: anytime. EFFECT: PROTECT a Soviet army in Moscow for 1 turn
+	- Rasputitsa: WHEN: Axis BUILDS or RECRUITS an army adjacent or in Moscow, EFFECT: ELIMINATE that army.
+	- Leningrad: WHEN: anytime. EFFECT: PROTECT a Soviet army in Ukraine for 1 turn
+
+STATUS x 7
+	- Defense of the Motherland: WHEN: you BUILD an army, EFFECT: DISCARD 2 from HAND TO BUILD an army (1x/turn)
+	- Frontal Assault: WHEN: you BATTLE on land, EFFECT: DISCARD 2 from HAND to BATTLE another on the same region or adjacent (1x/turn).
+	- Guards: INSTEAD: DISCARD 2 from HAND to PLAY a build army from discarded pile.
+	- Scorched Earth: WHEN: always. EFFECT: Ukraine is no longer a supply zone for Germany AND Italy
+	- Shvernik's Evacuation Council: WHEN: always, EFFECT: Soviet armies are supplied.
+	- Stavka Forms Artillery Corps: WHEN: USSR BATTLES on land. DISCARD top 1 from draw to REMOVE all armies in that region (no limit per turn)
+	- Women Conscripts: WHEN: USSR PLAYS a build army card. DISCARD it on top of DRAW instead of DISCARD pile

@@ -1,0 +1,30 @@
+THEN -> order is enforced, but any combination can happen (0 - 0, 0 - 1, 1 - 0, 1 - 1)
+TO -> Second can only be made after the first, but the first is optional (0 - 0), (1 - 0), (1 - 1)
+
+USA
+5 build army, 4 land battle, 5 build navy, 4 sea battle
+
+ECONOMIC WARFARE x 5
+	- Bombers(2): TO_USE: own army within 3 spaces of Axis capital, EFFECT: That country must discard the top 4 cards
+	- Heavy Bombers(2): TO_USE: own army within 2 spaces of Axis capital, EFFECT: That country must discard the top 5 cards
+	- Firestorm Bombers(1): TO_USE: own army within 1 spaces of Axis capital, EFFECT: That country must discard the top 6 cards
+
+EVENT x 8
+	- Arsenal of Democracy: EFFECT: UK BUILD 0-1 army and 0-1 navy (any order)
+	- Free French Allies: EFFECT: UK BUILD 0-1  Army in Western Europe, 0-1 in North Africa and 0-1 in Africa (any order)
+	- Fleet Deployed to Pearl Harbor: Effect: BUILD a navy in East Pacific THEN BUILD a navy in North Pacific THEN BUILD an army in Hawaii
+	- Lend Lease: EFFECT: UK PLAYS THEN DRAWS 0-1 card . THEN: DISCARD top 3 cards of draw deck TO PLACE Lend Lease on top of draw
+	- Murmansk Convoy: EFFECT: RECRUIT available USSR army in Russia THEN USSR BUILDS 0-1 army
+	- Magic: EFFECT: DISCARD a JAPANESE status/response card
+	- Theater Shift: EFFECT: FOREACH US army/navy, REMOVE it and BUILD it somewhere else
+
+STATUS x 9
+	- Aircraft Carriers: WHEN: US BATTLES a SEA, EFFECT: DISCARD top 1 from draw THEN BUILD navy in that space (1x/turn)
+	- American Volunteer Group Expands: EFFECT: Szechuan is now a supply zone for USA
+	- Amphibious Landings: WHEN: US BATTLES in LAND, EFFECT: IF that space ADJACENT to supplied US Navy, DISCARD top 1 from draw THEN build army in that space ELSE CANNOT
+	- Flexible Resources: INSTEAD: DISCARD top 4 from draw THEN PLAY card from discard pile
+	- Flying Fortress: WHEN: US plays an EW card, EFFECT: that card discards +1
+	- Radar: WHEN: US navy is about to be removed, EFFECT: DISCARD top 3 from draw THEN prevent that navy from being removed
+	- Rosie the Riveter: WHEN: US is at discard phase, EFFECT: DISCARD into bottom draw deck 0 - 1 - 2 cards from hand.
+	- Superior Shipyards: WHEN: US builds a navy, EFFECT: DISCARD top 1 from draw THEN BUILD another navy (1x/turn)
+	- Wartime Production: WHEN: US builds an army, EFFECT: DISCARD top 1 from draw THEN BUILD another army (1x/turn)

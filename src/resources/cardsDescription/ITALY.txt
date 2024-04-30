@@ -1,0 +1,32 @@
+AND -> order is not enforced, (AB, BA, A, B, 0)
+THEN -> order is enforced, but any combination can happen (AB, A, B, 0)
+TO -> Second can only be made after the first (AB), (A), (0)
+OR -> XOR (A, B)
+
+ITALY
+4 build army, 4 land battle, 3 build navy, 2 sea battle
+
+ECONOMIC WARFARE x 2
+	- Decima Flottiglia MAS (Frogmen): EFFECT: UK DISCARDS top 1 from draw THEN GAIN +1
+	- Regia Marina Closes Shipping Lanes: EFFECT: IF Italian navy in Mediterranean, UK DISCARDS top 1 from draw THEN GAIN +2 ELSE CANNOT
+
+EVENT x7
+	- Afrika Corps: EFFECT: RECRUIT an available GERMAN army in North Africa AND RECRUIT an available GERMAN navy in the Mediterranean.
+	- Division Azul: EFFECT: DISCARD a Soviet response card (cannot see them).
+	- Italian East Africa: EFFECT: RECRUIT an army in North Africa AND RECRUIT a navy in Bay of Bengal.
+	- Italy Attacks Communists: EFFECT: BUILD an army in Ukraine AND BUILD an army in Russia.
+	- German Aid In Greece: EFFECT: ELIMINATE an Allied army in the Balkans THEN RECRUIT an available GERMAN army in the Balkans
+	- German Reinforcements Counterattack: EFFECT: ELIMINATE an Allied army in Italy
+	- Plunder: EFFECT: FOR EACH Italian army and navy outside Italy, GAIN +1 
+
+RESPONSE x 3
+	- Monte Cassino: WHEN: anytime. EFFECT: PROTECT a GERMAN army in Italy for 1 turn.
+	- Romanian Reinforcements: WHEN: A supplied GERMAN army is REMOVED, EFFECT: RECRUIT an Italian army in that space.
+	- Skilled Pilots: WHEN: An Economic Warfare card with "Bombing" is PLAYed against Italy, EFFECT: Ignore that card.
+
+STATUS x 5
+	- Anti-Communist Sentiment: WHEN: An Italian army is on Russia or Ukraine at the Victory Phase, EFFECT: GAIN +1
+	- Balkan Resources: WHEN: An Italian army is in the Balkans at the Victory Phase, EFFECT: GAIN +1
+	- Bravado: INSTEAD: DISCARD 3 from HAND TO PLAY a Land Battle from the discarded pile.
+	- Imperio Italiano: WHEN: An Italian or German army is on North Africa OR Africa OR Middle East at the Victory Phase, EFFECT: GAIN +1 for each Region
+	- Mare Nostrum: WHEN: Victory Phase, EFFECT: FOR EACH Italian Navy, GAIN +1

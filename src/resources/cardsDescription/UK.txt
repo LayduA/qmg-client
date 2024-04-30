@@ -1,0 +1,35 @@
+AND -> order is not enforced, (AB, BA, A, B, 0)
+THEN -> order is enforced, but any combination can happen (AB, A, B, 0)
+TO -> Second can only be made after the first (AB), (A), (0)
+OR -> XOR (A, B)
+
+UK
+5 build army, 4 land battle, 5 build navy, 5 sea battle
+
+ECONOMIC WARFARE x 2
+	- Bomber Command: Germany OR Italy DISCARDS top 4 from draw
+	- Malta Submarines: Germany AND Italy each DISCARDS top 2 from draw OR REMOVE navy from Mediterranean
+
+EVENT x 7
+	- Dutch East Indies: EFFECT: RECRUIT an Army in Indonesia AND New Guinea AND RECRUIT a Navy in South China Sea
+	- Enigma: DISCARD a German status card.
+	- General Smuts Strengthens Ties to UK: RECRUIT an Army in Africa and a Navy in Southern Ocean OR Indian Ocean
+	- Increased Commonwealth Support: Recruit a UK army in India OR Australia OR Canada
+	- Ledo and Burma Roads: ELIMINATE Axis Army in China THEN RECRUIT an available USA army in Szechuan
+	- King Peter Enthroned in Yugoslavia: ELIMINATE an Axis army in the Balkans THEN RECRUIT an army in the Balkans
+	- Singapore: RECRUIT an ARMY in Southeast Asia AND a navy in the South China Sea
+
+RESPONSE x 4
+	- Defensive Posture: WHEN: anytime. EFFECT: PROTECT 1 supplied UK army for 1 turn
+	- Destroyers: WHEN: anytime. EFFECT: PROTECT 1 supplied USA navy OR UK navy adjacent to a UK army for 1 turn.
+	- Loyal to the Crown: WHEN: an Axis army is BUILT or RECRUITED in India, Australia, or Canada, EFFECT: ELIMINATE that army.
+	- RAF: When: anytime, EFFECT: PROTECT a supplied Allied navy in the North Sea OR an Allied army in the UK for 1 turn.
+
+STATUS x 7
+	- Australia Forms the Directorate of Manpower: EFFECT: UK can build in Australia as if it was its capital (no need of supplied chain)
+	- Free France: INSTEAD: DISCARD 2 from HAND TO BUILD army in Western Europe
+	- Lord Linlithgow Declares India to be at War: EFFECT: UK can build in India as if it was its capital (no need of supplied chain)
+	- Mackenzie King Drafts the National Resources Mobilization Act: EFFECT: Canada is a supply zone for the UK.
+	- Rationing: AFTER: DISCARD 1 from HAND TO place the played card at the bottom of the draw.
+	- Resistance: INSTEAD of playing card, DISCARD 2 from HAND TO BATTLE an army in Western Europe OR Italy
+	- The Royal Navy: WHEN: UK battles on sea, EFFECT: DISCARD 2 from HAND TO BATTLE another navy in the same or adjacent Region

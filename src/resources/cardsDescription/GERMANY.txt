@@ -1,0 +1,34 @@
+AND -> order is not enforced, (AB, BA, A, B, 0)
+THEN -> order is enforced, but any combination can happen (AB, A, B, 0)
+TO -> Second can only be made after the first (AB), (A), (0)
+
+GERMANY
+6 build army, 7 land battle, 2 build navy, 2 sea battle
+
+ECONOMIC WARFARE x 5
+	- Submarines (A) x2: IF german troop adjacent to North Sea, UK DISCARDS top 3 from draw THEN GAIN 1 ELSE CANNOT.
+	- Submarines (B): (IF german troop in Scandinavia, USSR DISCARDS top 5 from draw ELSE USSR DISCARDS top 2 from draw) THEN GAIN 1.
+	- Submarines (C): IF german troop adjacent to North Sea, ((IF german navy in Scandinavia USA DISCARDS top 5 from draw ELSE USA DISCARDS top 3 from draw) THEN GAIN 1) ELSE CANNOT.
+	- V-Weapons: IF german army adjacent to North Sea, UK DISCARDS top 2 from draw THEN GAIN 2 ELSE CANNOT.
+
+EVENT x 7
+	- Broad Front: BATTLE 0 - 1 - 2 - 3 USSR ARMY adjacent to German armies.
+	- Forced Conscription: RECRUIT 0 - 1 - 2 ARMY in or adjacent to Germany.
+	- Guns and Butter: PLAY Basic card from draw deck THEN SHUFFLE draw deck.
+	- Plunder: GAIN 1 x each army outside germany
+	- Military Dictatorships in the Balkans: RECRUIT an ITALY army in the Balkans AND ELIMINATE an Allied army in Ukraine
+	- Production Initiative: PLAY a status card from the deck THEN SHUFFLE
+	- The Autobahn: FOR EACH army, REMOVE it TO BUILD it.
+
+STATUS x 11
+	- Abundant Resources: WHEN: a german army is in Ukraine during Victory Phase, EFFECT: GAIN +1
+	- Atlantic Wall: WHEN: An Axis army is targeted for battle in Western Europe, EFFECT: The country targeting the army DISCARDS top 3 from draw.
+	- Bias For Action: WHEN: Germany builds an army, EFFECT: DISCARD top 1 from draw TO BATTLE an army adjacent to that army (may battle an empty region) (1x / turn)
+	- Blitzkrieg: WHEN: Germany battles on land, EFFECT: DISCARD top 1 from draw TO BUILD an army in that region (1x / turn)
+	- Conscription: INSTEAD: DISCARD top 2 from draw TO PLAY a "Build army" from your discard pile.
+	- Dive Bombers: WHEN: Germany battles on land, EFFECT: Discard top 1 from draw THEN BATTLE an army in the same or an adjacent region from that region (1x / turn)
+	- Jet Fighters: WHEN: Germany is the target of an economic warfare card, EFFECT: the targetng country DISCARDS top 3 from draw.
+	- Superior Planning: BEFORE: LOOK the top 3 cards of the draw then put them back on top in any order.
+	- Swedish Iron Ore: WHEN: Germany has a navy in Baltic Sea during Victory phase, EFFECT: IF Germany has an army in Scandinavia, GAIN +2 ELSE GAIN +1
+	- Volksturm: WHEN: Germany plays a "Land Battle" card, EFFECT: it may always target Germany
+	- Wolf Packs: When: Germany or Japan plays a "Submarines", EFFECT: IF a german army in Scandinavie, the targeted nation DISCARDS 2 ELSE the targeted nation DISCARDS 1
