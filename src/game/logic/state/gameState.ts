@@ -3,6 +3,7 @@ import {Update} from "./update/update";
 import {NationName, NationState, Team} from "./nationState";
 import {Troop} from "../map/troop";
 import {Board} from "../map/board";
+import {RegionName} from "../map/region";
 
 export class GameState {
 
@@ -44,5 +45,20 @@ export class GameState {
             return this.nations.map(nation => nation.army).flat();
         }
         return this.getNation(name).army
+    }
+
+    public getArmyRegions(nationName: NationName): RegionName[] {
+        const nation = this.getNation(nationName)
+        const candidates: RegionName[] = this.board.getRegion(nation.props.capital).getOccupiers(this).length > 0 ? [] : [nation.props.capital];
+        for (const troop of nation.army.filter(t => t.supplied)) {
+            for (const region of this.board.getNeighbors(troop.regionName).filter(region => !region.props.isOcean)) {
+                if (candidates.includes(region.props.name)) continue; // If region already a candidate
+                const occupiers = region.getOccupiers(this);
+                if (occupiers.find(t => t.props.nationName === nationName)) continue; // If own army already occupies
+                if (occupiers.find(t => this.getNation(t.props.nationName).props.team !== nation.props.team)) continue; // If enemy occupies
+                candidates.push(region.props.name);
+            }
+        }
+        return candidates;
     }
 }

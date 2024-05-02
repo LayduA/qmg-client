@@ -21,10 +21,10 @@ EVENT x 8
 STATUS x 9
 	- Aircraft Carriers: WHEN: US BATTLES a SEA, EFFECT: DISCARD top 1 from draw THEN BUILD navy in that space (1x/turn)
 	- American Volunteer Group Expands: EFFECT: Szechuan is now a supply zone for USA
-	- Amphibious Landings: WHEN: US BATTLES in LAND, EFFECT: IF that space ADJACENT to supplied US Navy, DISCARD top 1 from draw THEN build army in that space ELSE CANNOT
+	- Amphibious Landings: WHEN: US BATTLES in LAND in space ADJACENT to supplied US Navy, EFFECT: DISCARD top 1 from draw THEN build army in that space ELSE CANNOT
 	- Flexible Resources: INSTEAD: DISCARD top 4 from draw THEN PLAY card from discard pile
 	- Flying Fortress: WHEN: US plays an EW card, EFFECT: that card discards +1
-	- Radar: WHEN: US navy is about to be removed, EFFECT: DISCARD top 3 from draw THEN prevent that navy from being removed
+	- Radar: WHEN: US navy is about to be removed, EFFECT: DISCARD top 3 from draw TO prevent that navy from being removed
 	- Rosie the Riveter: WHEN: US is at discard phase, EFFECT: DISCARD into bottom draw deck 0 - 1 - 2 cards from hand.
-	- Superior Shipyards: WHEN: US builds a navy, EFFECT: DISCARD top 1 from draw THEN BUILD another navy (1x/turn)
-	- Wartime Production: WHEN: US builds an army, EFFECT: DISCARD top 1 from draw THEN BUILD another army (1x/turn)
+	- Superior Shipyards: WHEN: US builds a navy, EFFECT: DISCARD top 1 from draw TO BUILD another navy (1x/turn)
+	- Wartime Production: WHEN: US builds an army, EFFECT: DISCARD top 1 from draw TO BUILD another army (1x/turn)

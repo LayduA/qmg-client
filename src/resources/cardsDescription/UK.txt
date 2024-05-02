@@ -31,5 +31,5 @@ STATUS x 7
 	- Lord Linlithgow Declares India to be at War: EFFECT: UK can build in India as if it was its capital (no need of supplied chain)
 	- Mackenzie King Drafts the National Resources Mobilization Act: EFFECT: Canada is a supply zone for the UK.
 	- Rationing: AFTER: DISCARD 1 from HAND TO place the played card at the bottom of the draw.
-	- Resistance: INSTEAD of playing card, DISCARD 2 from HAND TO BATTLE an army in Western Europe OR Italy
+	- Resistance: INSTEAD: DISCARD 2 from HAND TO BATTLE an army in Western Europe OR Italy
 	- The Royal Navy: WHEN: UK battles on sea, EFFECT: DISCARD 2 from HAND TO BATTLE another navy in the same or adjacent Region

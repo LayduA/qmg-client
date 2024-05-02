@@ -13,12 +13,19 @@ ECONOMIC WARFARE x 5
 
 EVENT x 7
 	- Broad Front: BATTLE 0 - 1 - 2 - 3 USSR ARMY adjacent to German armies.
+	    REPEAT(3, BATTLE_LAND(troop => troop.props.nation === USSR && adjacent to armies))
 	- Forced Conscription: RECRUIT 0 - 1 - 2 ARMY in or adjacent to Germany.
+	    REPEAT(2, RECRUIT_ARMY(region => region in Germany.getNeighbors()))
 	- Guns and Butter: PLAY Basic card from draw deck THEN SHUFFLE draw deck.
+	    TODO
 	- Plunder: GAIN 1 x each army outside germany
+	    FOREACH(troops, t => t.region != Germany, GAIN (1))
 	- Military Dictatorships in the Balkans: RECRUIT an ITALY army in the Balkans AND ELIMINATE an Allied army in Ukraine
+	    AND(RECRUIT(region => region.name === balkans, nation => nation.name === ITALY), ELIMINATE(troop => t.props.nation.team === ALLIES, region => region.name === Ukraine
 	- Production Initiative: PLAY a status card from the deck THEN SHUFFLE
+	    TODO
 	- The Autobahn: FOR EACH army, REMOVE it TO BUILD it.
+	    FOREACH(troops, t => t.type === ARMY, TO(REMOVE(t), BUILD_ARMY())
 
 STATUS x 11
 	- Abundant Resources: WHEN: a german army is in Ukraine during Victory Phase, EFFECT: GAIN +1
@@ -27,8 +34,8 @@ STATUS x 11
 	- Blitzkrieg: WHEN: Germany battles on land, EFFECT: DISCARD top 1 from draw TO BUILD an army in that region (1x / turn)
 	- Conscription: INSTEAD: DISCARD top 2 from draw TO PLAY a "Build army" from your discard pile.
 	- Dive Bombers: WHEN: Germany battles on land, EFFECT: Discard top 1 from draw THEN BATTLE an army in the same or an adjacent region from that region (1x / turn)
-	- Jet Fighters: WHEN: Germany is the target of an economic warfare card, EFFECT: the targetng country DISCARDS top 3 from draw.
+	- Jet Fighters: WHEN: Germany is the target of an economic warfare card, EFFECT: the targeting country DISCARDS top 3 from draw.
 	- Superior Planning: BEFORE: LOOK the top 3 cards of the draw then put them back on top in any order.
-	- Swedish Iron Ore: WHEN: Germany has a navy in Baltic Sea during Victory phase, EFFECT: IF Germany has an army in Scandinavia, GAIN +2 ELSE GAIN +1
+	- Swedish Iron Ore: WHEN: Germany has a navy in the Baltic Sea during Victory phase, EFFECT: IF Germany has an army in Scandinavia, GAIN +2 ELSE GAIN +1
 	- Volksturm: WHEN: Germany plays a "Land Battle" card, EFFECT: it may always target Germany
-	- Wolf Packs: When: Germany or Japan plays a "Submarines", EFFECT: IF a german army in Scandinavie, the targeted nation DISCARDS 2 ELSE the targeted nation DISCARDS 1
+	- Wolf Packs: When: Germany or Japan plays a "Submarines", EFFECT: IF a german army in Scandinavia, the targeted nation DISCARDS 2 ELSE the targeted nation DISCARDS 1
