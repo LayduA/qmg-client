@@ -25,7 +25,7 @@ function App() {
     const makePlayerChoose = (choices: any[], then: (gameState: GameState, choice: any) => Update) => {
         console.log(choices);
         setHighlightedRegions(choices.map(r => ({name: r, color: 'green'} as HighlightedRegion)))
-        const choice = RegionName.GERMANY;
+        const choice = playingNation.props.capital;
         const update = then(gameState, choice);
         updateGameState(update);
     }
@@ -35,7 +35,7 @@ function App() {
                 <TeamPicker setNation={setPlayingNation} gameState={gameState}/>
                 <Board gameState={gameState} updateGameState={updateGameState} highlightedRegions={highlightedRegions}
                        playingNation={playingNation}/>
-                <Hand gameState={gameState} nation={NationName.GERMANY} makePlayerChoose={makePlayerChoose}/>
+                <Hand gameState={gameState} nation={playingNation.props.name} makePlayerChoose={makePlayerChoose}/>
                 <PlayerCard gameState={gameState} playerName={'Adrien'}/>
             </header>
         </div>

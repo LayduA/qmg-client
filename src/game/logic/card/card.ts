@@ -42,13 +42,7 @@ export class Deck {
     }
 
     public static buildDeck(nation: NationName): Deck {
-        switch (nation) {
-            case NationName.GERMANY:
-                const BUILD_ARMY_CARD = BUILD();
-                return new Deck([BUILD_ARMY_CARD])
-            default:
-                return new Deck([]);
-        }
+        return new Deck([BUILD(nation)])
     }
 }
 
@@ -74,15 +68,15 @@ export class RegionTargetCard extends Card {
     }
 }
 
-const BUILD = () => new RegionTargetCard({
+const BUILD = (nation: NationName) => new RegionTargetCard({
     name: 'Build Army',
-    owner: NationName.GERMANY,
+    owner: nation,
     type: CardType.BUILD_ARMY,
     getChoices: (gameState) => {
-        return gameState.getArmyRegions(NationName.GERMANY);
+        return gameState.getArmyRegions(nation);
     },
     afterChoice: (gameState, choice) => {
-        return UpdateArmy.build(choice, NationName.GERMANY, TroopType.ARMY);
+        return UpdateArmy.build(choice, nation, TroopType.ARMY);
     }
 });
 
