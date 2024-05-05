@@ -1,41 +1,60 @@
 import React, {useState} from 'react';
 import './App.css';
 import {Game} from "./game/logic/game";
-import {Player} from "./game/logic/player/player";
 import PlayerCard, {Hand} from "./game/sprites/playerCard";
-import Board, {HighlightedRegion} from "./game/sprites/map/boardView";
+import Board from "./game/sprites/map/boardView";
 import {GameState} from "./game/logic/state/gameState";
 import {Update} from "./game/logic/state/update/update";
 import {NationName} from "./game/logic/state/nationState";
 import TeamPicker from "./game/sprites/map/teamPicker";
 import {RegionName} from "./game/logic/map/region";
+import {Card} from "./game/logic/card/card";
+import {Troop} from "./game/logic/map/troop";
+
+
+type Choosable = RegionName | NationName | Card | Troop;
+
+export type HighlightedElement = {
+    element: Choosable
+    color?: string
+}
 
 function App() {
 
     const game = new Game();
     const [gameState, setGameState] = React.useState<GameState>(game.initialState);
-    // Change to highlighted element (Troop, Region, Card, Player)
-    const [highlightedRegions, setHighlightedRegions] = React.useState([] as HighlightedRegion[]);
+    const [highlightedElements, setHighlightedElements] = React.useState([] as HighlightedElement[]);
     const [playingNation, setPlayingNation] = useState(gameState.getNation(NationName.GERMANY));
+
+    const [card, setCard] = React.useState<Card>();
 
     const updateGameState = (update: Update) => {
         setGameState(gameState.update(update))
     }
-
-    const makePlayerChoose = (choices: any[], then: (gameState: GameState, choice: any) => Update) => {
-        console.log(choices);
-        setHighlightedRegions(choices.map(r => ({name: r, color: 'green'} as HighlightedRegion)))
-        const choice = playingNation.props.capital;
-        const update = then(gameState, choice);
-        updateGameState(update);
+    const playCard = (playedCard: Card) => {
+        if (!card) {
+            console.log(`Card played: ${playedCard.props.name}`)
+            setCard(playedCard);
+            setHighlightedElements(playedCard.getChoices(gameState).map((choice: Choosable) => ({element: choice, color: 'green'})));
+        }
     }
+
+    const clickedElement = (element: Choosable) => {
+        if (card?.getChoices(gameState).includes(element)){
+            console.log(`Chosen: ${element}`)
+            const update = card?.afterChoice(gameState, element);
+            updateGameState(update);
+            setHighlightedElements([]);
+            setCard(undefined);
+        }
+    }
+
     return (
         <div className="App">
             <header className="App-header">
                 <TeamPicker setNation={setPlayingNation} gameState={gameState}/>
-                <Board gameState={gameState} updateGameState={updateGameState} highlightedRegions={highlightedRegions}
-                       playingNation={playingNation}/>
-                <Hand gameState={gameState} nation={playingNation.props.name} makePlayerChoose={makePlayerChoose}/>
+                <Board gameState={gameState} highlightedElements={highlightedElements} clickedElement={clickedElement}/>
+                <Hand gameState={gameState} nation={playingNation.props.name} playCard={playCard}/>
                 <PlayerCard gameState={gameState} playerName={'Adrien'}/>
             </header>
         </div>

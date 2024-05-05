@@ -1,7 +1,5 @@
 import {Troop, TroopType} from "../map/troop";
 import {RegionName} from "../map/region";
-import {GameState} from "./gameState";
-import {HighlightedRegion} from "../../sprites/map/boardView";
 import {Deck} from "../card/card";
 
 export enum NationName {

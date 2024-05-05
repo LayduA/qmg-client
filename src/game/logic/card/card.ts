@@ -42,7 +42,7 @@ export class Deck {
     }
 
     public static buildDeck(nation: NationName): Deck {
-        return new Deck([BUILD(nation)])
+        return new Deck([BUILD_ARMY(nation), BUILD_NAVY(nation)])
     }
 }
 
@@ -68,15 +68,27 @@ export class RegionTargetCard extends Card {
     }
 }
 
-const BUILD = (nation: NationName) => new RegionTargetCard({
+const BUILD_ARMY = (nation: NationName) => new RegionTargetCard({
     name: 'Build Army',
     owner: nation,
     type: CardType.BUILD_ARMY,
     getChoices: (gameState) => {
-        return gameState.getArmyRegions(nation);
+        return gameState.getTroopOptions(nation);
     },
     afterChoice: (gameState, choice) => {
         return UpdateArmy.build(choice, nation, TroopType.ARMY);
+    }
+});
+
+const BUILD_NAVY = (nation: NationName) => new RegionTargetCard({
+    name: 'Build Navy',
+    owner: nation,
+    type: CardType.BUILD_NAVY,
+    getChoices: (gameState) => {
+        return gameState.getTroopOptions(nation, TroopType.NAVY);
+    },
+    afterChoice: (gameState, choice) => {
+        return UpdateArmy.build(choice, nation, TroopType.NAVY);
     }
 });
 

@@ -1,16 +1,15 @@
 import {Region} from "../../logic/map/region";
 import PolygonView from "./polygonView";
 import React from "react";
-import {HighlightedRegion} from "./boardView";
 
 type RegionViewProps = {
     region: Region
     scale: number
     highlightColor?: string
-    addTroop: Function
+    onClick: Function
 }
 
-function RegionView({region, scale, highlightColor, addTroop}: RegionViewProps) {
+function RegionView({region, scale, highlightColor, onClick}: RegionViewProps) {
 
     return (
         <div>
@@ -21,7 +20,7 @@ function RegionView({region, scale, highlightColor, addTroop}: RegionViewProps) 
                 opacity={highlightColor ? 0.5 : 0}
                 textOnHover={region.props.name}
                 onClick={(event) => {
-                    addTroop(region)
+                    onClick(region.props.name)
                 }}/>
         </div>
     );

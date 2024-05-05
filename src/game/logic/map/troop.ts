@@ -129,7 +129,7 @@ export class Troop {
         return allAllies.filter((troop) => adjacentRegionNames.includes(troop.regionName));
     }
 
-    private getAnchors(state: GameState): Troop[] {
+    public getAnchors(state: GameState): Troop[] {
         if (this.props.type !== TroopType.NAVY) return [];
         return this.getAdjacentAllies(state)
             .filter((troop) => troop.props.type === TroopType.ARMY && troop.supplied);

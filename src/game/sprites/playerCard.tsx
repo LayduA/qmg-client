@@ -6,15 +6,13 @@ import {TROOP_POLYGONS, TroopType} from "../logic/map/troop";
 import {GermanyFlag} from "./flags";
 import {Player} from "../logic/player/player";
 import buildArmyImg from "../../resources/images/build_army.png";
+import buildNavyImg from "../../resources/images/build_navy.png";
 import {NationName} from "../logic/state/nationState";
-import {useState} from "react";
-import {HighlightedRegion} from "./map/boardView";
+import {CardType} from "../logic/card/card";
 
 function PlayerCard({gameState, playerName}: { gameState: GameState, playerName: string }) {
 
     const player = gameState.players.filter(p => p.name === playerName)[0];
-
-    const [choosing, setChoosing] = useState(false);
 
     return (
         <Box
@@ -71,29 +69,26 @@ function troopList(gameState: GameState, player: Player, type: TroopType) {
 
 export default PlayerCard;
 
-export function Hand({gameState, nation, makePlayerChoose}: {
+export function Hand({gameState, nation, playCard}: {
     gameState: GameState,
     nation: NationName,
-    makePlayerChoose: Function
+    playCard: Function,
 }) {
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'row'
         }}>
-            {gameState.getNation(nation).hand.cards.map((c, index) => (
+            {gameState.getNation(nation).hand.cards.map((card, index) => (
                 <Box
                     key={`card-${nation}-${index}`}
                     sx={{
                         width: 250,
                         height: 340,
-                        backgroundImage: `url(${buildArmyImg})`,
+                        backgroundImage: `url(${card.props.type === CardType.BUILD_ARMY ? buildArmyImg : buildNavyImg})`,
                     }}
                     onClick={() => {
-                        if (c.getChoices) {
-                            const choices = c.getChoices(gameState);
-                            makePlayerChoose(choices, c.afterChoice);
-                        }
+                        playCard(card)
                     }}
                 >
                 </Box>
