@@ -3,7 +3,7 @@ import {RegionName} from "../map/region";
 import {GameState} from "../state/gameState";
 import {Update} from "../state/update/update";
 import {UpdateArmy} from "../state/update/updateArmy";
-import {TroopType} from "../map/troop";
+import {Troop, TroopType} from "../armies/troop";
 
 export enum CardType {
     BUILD_ARMY,
@@ -18,15 +18,16 @@ export enum CardType {
     BOLSTER
 }
 
-export abstract class Card {
+export class Card {
 
     public readonly props: CardProps;
+    public readonly cardEffects: CardEffect[];
 
-    protected constructor(props: CardProps) {
+    public constructor(props: CardProps, cardEffects: CardEffect[]) {
         this.props = props;
+        this.cardEffects = cardEffects;
     }
-    public abstract getChoices: Function;
-    public abstract afterChoice: Function;
+
 }
 
 export class Deck {
@@ -42,7 +43,8 @@ export class Deck {
     }
 
     public static buildDeck(nation: NationName): Deck {
-        return new Deck([BUILD_ARMY(nation), BUILD_NAVY(nation)])
+        if (nation === NationName.ITALY) return new Deck([BUILD_ARMY_CARD(nation)]);
+        return new Deck([BUILD_ARMY_CARD(nation), BUILD_NAVY_CARD(nation)])
     }
 }
 
@@ -51,46 +53,57 @@ type CardProps = {
     owner: NationName;
     type: CardType;
 }
-type RegionTargetProps = {
-    getChoices: (gameState: GameState) => RegionName[] // gives all the choices of regions in which to build
-    afterChoice: (gameState: GameState, choice: RegionName) => Update // What to do once a region has been chosen
+type CardEffectProps = {
+    getChoices: (gameState: GameState) => Choosable[] // gives all the choices of regions in which to build
+    afterChoice: (gameState: GameState, choice: any) => Update // What to do once a region has been chosen
 }
 
-export class RegionTargetCard extends Card {
+export type Choosable = RegionName | NationName | Card | Troop;
 
-    public readonly getChoices: (state: GameState) => RegionName[];
-    public readonly afterChoice: (state: GameState, choice: RegionName) => Update;
+export class CardEffect {
 
-    public constructor(props: RegionTargetProps & CardProps) {
-        super({name: props.name, owner: props.owner, type: props.type});
+    public readonly getChoices: (state: GameState) => Choosable[];
+    public readonly afterChoice: (state: GameState, choice: any) => Update;
+    public resolved: boolean;
+
+    public constructor(props: CardEffectProps) {
         this.getChoices = props.getChoices;
         this.afterChoice = props.afterChoice;
+        this.resolved = false;
     }
 }
 
-const BUILD_ARMY = (nation: NationName) => new RegionTargetCard({
-    name: 'Build Army',
-    owner: nation,
-    type: CardType.BUILD_ARMY,
-    getChoices: (gameState) => {
-        return gameState.getTroopOptions(nation);
-    },
-    afterChoice: (gameState, choice) => {
-        return UpdateArmy.build(choice, nation, TroopType.ARMY);
-    }
-});
+const BUILD_ARMY_CARD = (nation: NationName) => new Card({
+        name: 'Build Army',
+        owner: nation,
+        type: CardType.BUILD_ARMY,
+    }, [
+        new CardEffect({
+            getChoices: (gameState) => {
+                return gameState.getTroopOptions(nation);
+            },
+            afterChoice: (gameState, choice: RegionName) => {
+                return UpdateArmy.build(choice, nation, TroopType.ARMY);
+            }
+        }),
+    ]
+);
 
-const BUILD_NAVY = (nation: NationName) => new RegionTargetCard({
-    name: 'Build Navy',
-    owner: nation,
-    type: CardType.BUILD_NAVY,
-    getChoices: (gameState) => {
-        return gameState.getTroopOptions(nation, TroopType.NAVY);
-    },
-    afterChoice: (gameState, choice) => {
-        return UpdateArmy.build(choice, nation, TroopType.NAVY);
-    }
-});
+
+const BUILD_NAVY_CARD = (nation: NationName) => new Card({
+        name: 'Build Navy',
+        owner: nation,
+        type: CardType.BUILD_NAVY,
+    }, [
+        new CardEffect({
+            getChoices: (gameState) => {
+                return gameState.getTroopOptions(nation, TroopType.NAVY);
+            },
+            afterChoice: (gameState, choice) => {
+                return UpdateArmy.build(choice, nation, TroopType.NAVY);
+            }
+        })]
+);
 
 enum Action {
     BATTLE_LAND, // target: army

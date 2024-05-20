@@ -9,8 +9,8 @@ import {HighlightedElement} from "../../../App";
 
 function BoardView({gameState, highlightedElements, clickedElement}:
                        { gameState: GameState, highlightedElements: HighlightedElement[], clickedElement: Function}) {
-    const [scale] = React.useState(1);
 
+    const [scale] = React.useState(1);
 
     return (
         <Box

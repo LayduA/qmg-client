@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import {NationName} from "../../logic/state/nationState";
-import {GameState} from "../../logic/state/gameState";
+import {NationName} from "../game/logic/state/nationState";
+import {GameState} from "../game/logic/state/gameState";
 
 function TeamPicker({gameState, setNation}: { gameState: GameState, setNation: Function }) {
     const [value, setValue] = useState<string>(NationName.GERMANY);

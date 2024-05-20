@@ -1,7 +1,7 @@
 import {LogicElement} from "../logicElement";
 import {Point} from "../../sprites/map/polygonView";
 import {GameState} from "../state/gameState";
-import {Troop} from "./troop";
+import {Troop} from "../armies/troop";
 
 export enum RegionName {
     GERMANY = 'Allemagne',

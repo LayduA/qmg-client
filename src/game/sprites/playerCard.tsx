@@ -2,7 +2,7 @@ import {Box, Typography} from "@mui/material";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import {GameState} from "../logic/state/gameState";
 import PolygonView from "./map/polygonView";
-import {TROOP_POLYGONS, TroopType} from "../logic/map/troop";
+import {TROOP_POLYGONS, TroopType} from "../logic/armies/troop";
 import {GermanyFlag} from "./flags";
 import {Player} from "../logic/player/player";
 import buildArmyImg from "../../resources/images/build_army.png";

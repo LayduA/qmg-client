@@ -1,7 +1,7 @@
 import {Update} from "./update";
 import {GameState} from "../gameState";
 import {NationName, NationState} from "../nationState";
-import {TroopType} from "../../map/troop";
+import {TroopType} from "../../armies/troop";
 import {RegionName} from "../../map/region";
 
 enum UpdateArmyType {

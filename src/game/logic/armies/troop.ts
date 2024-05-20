@@ -1,7 +1,7 @@
 import {Point} from "../../sprites/map/polygonView";
 import {NationName} from "../state/nationState";
 import {GameState} from "../state/gameState";
-import {RegionName} from "./region";
+import {RegionName} from "../map/region";
 
 export enum TroopType {
     ARMY,

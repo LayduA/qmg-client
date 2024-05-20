@@ -1,4 +1,4 @@
-import {Troop, TROOP_POLYGONS} from "../../logic/map/troop";
+import {Troop, TROOP_POLYGONS} from "../../logic/armies/troop";
 import PolygonView, {Point} from "./polygonView";
 import {useEffect, useState} from "react";
 import {GameState} from "../../logic/state/gameState";

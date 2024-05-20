@@ -1,5 +1,5 @@
 import {GameState} from "../../logic/state/gameState";
-import {SupplyLink, Troop} from "../../logic/map/troop";
+import {SupplyLink, Troop} from "../../logic/armies/troop";
 import React, {useMemo} from "react";
 import TroopView from "./troopView";
 import PolygonView from "./polygonView";

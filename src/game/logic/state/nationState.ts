@@ -1,4 +1,4 @@
-import {Troop, TroopType} from "../map/troop";
+import {Troop, TroopType} from "../armies/troop";
 import {RegionName} from "../map/region";
 import {Deck} from "../card/card";
 
