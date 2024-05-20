@@ -87,6 +87,8 @@ export class Troop {
     }
 
 
+
+    // Adds this troop to a supply tree, then notifies all neighbors to add themselves to the tree as well
     public tree(state: GameState, tree: Troop[], edges: SupplyLink[]): Troop[] {
 
         tree.push(this)
