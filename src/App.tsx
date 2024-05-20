@@ -17,6 +17,12 @@ export type HighlightedElement = {
     color?: string
 }
 
+export type AllTroops = {
+    troops: Troop[],
+    supplyPaths: RegionName[][],
+    allEdges: SupplyLink[],
+}
+
 function App() {
 
     const game = new Game();
@@ -33,33 +39,23 @@ function App() {
         setGameState(gameState.update(update))
     }
 
-    const troops = useMemo(() => {
-        let iterating = true;
+    const supplyChains = useMemo(() => {
 
-        const newTroops = gameState.getAllTroops().map((troop) => new Troop(troop.props, troop.regionName));
-
-        if (newTroops.length === 0) return;
-
-        for (const troop of newTroops) {
-            troop.supplied = false;
-        }
-
-        // An array of paths => 2 dimensions
-        let previousState: RegionName[][] = [];
         // An array of supply links for all nations
         let allEdges: SupplyLink[] = new Array<SupplyLink>();
-        let supplyPaths: RegionName[][] = new Array<RegionName[]>();
-        let count = 0;
-        // while (iterating && count < 15) {
+        let supplyPathsRegions: RegionName[][] = new Array<RegionName[]>();
 
         for (let i = 0; i < gameState.nations.length; i++) {
             const edges: SupplyLink[] = [];
-            const trees: Troop[][] = []
+            const supplyPaths: Troop[][] = []
             const nationName = Object.values(NationName)[i];
-            for (const troop of newTroops.filter((troop: Troop) => troop.props.nationName === nationName && troop.isOnSupplyZone(gameState))) {
-                trees.push(troop.tree(gameState, [], edges));
+            for (const region of gameState.board.regions.filter(region => region.props.isSupplyZone)) {
+                const troop = region.occupiers.find(t => t.props.nationName === nationName);
+                if (troop){
+                    supplyPaths.push(troop.tree(gameState, [], edges));
+                }
             }
-            supplyPaths = supplyPaths.concat(trees.map(tree => tree.map(troop => troop.regionName)));
+            supplyPathsRegions = supplyPathsRegions.concat(supplyPaths.map(tree => tree.map(troop => troop.regionName)));
             allEdges = allEdges.concat(edges);
         }
 
@@ -67,8 +63,8 @@ function App() {
         //     iterating = JSON.stringify(previousState) !== JSON.stringify(state);
         //     previousState = state;
         // }
-        console.log(supplyPaths, allEdges)
-        return supplyPaths
+        console.log(supplyPathsRegions, allEdges)
+        return {supplyPaths: supplyPathsRegions, allEdges: allEdges} as AllTroops;
     }, [gameState]);
 
     useEffect(() => {
@@ -76,7 +72,7 @@ function App() {
             setHighlightedElements([])
             return;
         }
-        const choices = cardEffects[effectIndex.current].getChoices(gameState);
+        const choices = cardEffects[effectIndex.current].getChoices(gameState, supplyChains);
         setHighlightedElements(choices.map((choice: Choosable) => ({
             element: choice,
             color: 'green'
@@ -94,7 +90,7 @@ function App() {
 
     const clickedElement = (element: Choosable) => {
         if (!cardEffects) return;
-        if (cardEffects[effectIndex.current].getChoices(gameState).includes(element)) {
+        if (cardEffects[effectIndex.current].getChoices(gameState, supplyChains).includes(element)) {
             console.log(`Chosen: ${element}`)
             const update = cardEffects[effectIndex.current].afterChoice(gameState, element);
 
@@ -114,7 +110,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <TeamPicker setNation={setPlayingNation} gameState={gameState}/>
-                <Board gameState={gameState} highlightedElements={highlightedElements} clickedElement={clickedElement}/>
+                <Board gameState={gameState} allTroops={supplyChains} highlightedElements={highlightedElements} clickedElement={clickedElement}/>
                 <Hand gameState={gameState} nation={playingNation.props.name} playCard={playCard}/>
                 <PlayerCard gameState={gameState} playerName={'Adrien'}/>
             </header>

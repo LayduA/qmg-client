@@ -1,7 +1,7 @@
 import {Update} from "./update";
 import {GameState} from "../gameState";
 import {NationName, NationState} from "../nationState";
-import {TroopType} from "../../armies/troop";
+import {Troop, TroopType} from "../../armies/troop";
 import {RegionName} from "../../map/region";
 
 enum UpdateArmyType {
@@ -42,14 +42,11 @@ export class UpdateArmy extends Update {
     }
 
     public apply(previousState: GameState): GameState {
-        let newNationState: NationState | null = null;
+
         switch (this.updateArmyType) {
             case UpdateArmyType.Build:
-                newNationState = previousState.getNation(this.targetNation).addTroop(this.additionalParameters.troopType, this.regionName);
-                return previousState.updateNation(newNationState);
-            case UpdateArmyType.Destroy:
-                newNationState = previousState.getNation(this.targetNation).removeTroop(this.additionalParameters.troopType, this.regionName);
-                return previousState.updateNation(newNationState);
+                const newBoard = previousState.board.addOccupierToRegion(this.regionName, new Troop({nationName: this.targetNation, type: this.additionalParameters.troopType}, this.regionName))
+                return new GameState(previousState.players, previousState.nations, newBoard, previousState.troops, previousState.supplyPaths)
             default:
                 return previousState;
         }

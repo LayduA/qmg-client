@@ -3,9 +3,9 @@ import {RegionName, RegionProps} from "./region";
 export const REGIONS: RegionProps[] = [
     {
         name: RegionName.WESTERN_EUROPE,
-        neighbors: [RegionName.GERMANY, RegionName.NORTH_SEA],
+        neighbors: [RegionName.GERMANY, RegionName.NORTH_SEA, RegionName.ITALY],
         color: 'DarkOliveGreen',
-        isSupplyZone: true,
+        isSupplyZone: false, //TODO: change
         isOcean: false,
         anchor: [520, 280],
         points: [
@@ -55,7 +55,7 @@ export const REGIONS: RegionProps[] = [
     },
     {
         name: RegionName.GERMANY,
-        neighbors: [RegionName.WESTERN_EUROPE, RegionName.EASTERN_EUROPE],
+        neighbors: [RegionName.WESTERN_EUROPE, RegionName.EASTERN_EUROPE, RegionName.ITALY],
         color: 'grey',
         isSupplyZone: true,
         isOcean: false,
@@ -94,6 +94,20 @@ export const REGIONS: RegionProps[] = [
             [555, 223],
             [558, 214],
             [571, 207]
+        ]
+    },
+    {
+        name: RegionName.ITALY,
+        neighbors: [RegionName.WESTERN_EUROPE, RegionName.GERMANY],
+        color: 'purple',
+        isSupplyZone: true,
+        isOcean: false,
+        anchor: [600, 350],
+        points: [
+            [550, 300],
+            [650, 300],
+            [650, 400],
+            [550, 400]
         ]
     },
     {

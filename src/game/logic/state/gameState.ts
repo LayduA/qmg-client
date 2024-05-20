@@ -1,25 +1,37 @@
 import {Player} from "../player/player";
 import {Update} from "./update/update";
 import {NationName, NationState, Team} from "./nationState";
-import {Troop, TroopType} from "../armies/troop";
+import {SupplyLink, Troop, TroopType} from "../armies/troop";
 import {Board} from "../map/board";
 import {RegionName} from "../map/region";
+import {AllTroops} from "../../../App";
 
 export class GameState {
 
     public readonly players: Player[];
     public readonly nations: NationState[];
     public readonly board: Board;
+    public readonly troops: Troop[];
+    public readonly supplyPaths: Troop[][];
 
-    constructor(players: Player[], nations: NationState[]) {
+    constructor(players: Player[], nations: NationState[], board?: Board, troops?: Troop[], supplyPaths?: Troop[][]) {
         this.players = players;
         this.nations = nations;
-        this.board = new Board();
-        this.board.validate();
+        this.troops = troops ?? [];
+        this.supplyPaths = supplyPaths ?? [];
+        if(!board) {
+            this.board = new Board();
+            this.board.validate();
+        }
+        else {
+            this.board = board
+        }
     }
 
     public update(update: Update): GameState {
-        return update.apply(this);
+        const updatedState = update.apply(this);
+        console.log(updatedState);
+        return updatedState
     }
 
     public getNation(name: NationName): NationState {
@@ -41,28 +53,46 @@ export class GameState {
     }
 
     public getAllTroops(name?: NationName): Troop[] {
-        if (!name) {
-            return this.nations.map(nation => nation.army).flat();
+        if (name) return this.troops.filter(t => t.props.nationName === name);
+        return this.troops;
+    }
+
+    public computeSupplies(troops: Troop[]) {
+        let iterating = true;
+
+        // An array of paths => 2 dimensions
+        let previousState: RegionName[][] = [];
+        // An array of supply links for all nations
+        let allEdges: SupplyLink[] = new Array<SupplyLink>();
+        let allSupplyPaths: Troop[][] = new Array<Troop[]>();
+
+        let count = 0;
+        // while (iterating && count < 15) {
+
+        for (let i = 0; i < this.nations.length; i++) {
+            const edges: SupplyLink[] = [];
+            const supplyPaths: Troop[][] = []
+            const nationName = Object.values(NationName)[i];
+            for (const troop of troops.filter((troop: Troop) => troop.props.nationName === nationName && troop.isOnSupplyZone(this))) {
+                supplyPaths.push(troop.tree(this, [], edges));
+            }
+            allSupplyPaths = allSupplyPaths.concat(supplyPaths);
+            allEdges = allEdges.concat(edges);
         }
-        return this.getNation(name).army
+
+        //     count += 1;
+        //     iterating = JSON.stringify(previousState) !== JSON.stringify(state);
+        //     previousState = state;
+        // }
+        console.log(allSupplyPaths, allEdges)
+        return allSupplyPaths
     }
 
     public getTroopOptions(nationName: NationName, type: TroopType = TroopType.ARMY): RegionName[] {
-        const nation = this.getNation(nationName)
-        const candidates: RegionName[] = this.board.getRegion(nation.props.capital).getOccupiers(this).length > 0 ? [] : [nation.props.capital];
-        for (const troop of nation.army.filter(t => t.supplied)) {
-            for (const region of this.board.getNeighbors(troop.regionName).filter(region => region.props.isOcean === (type === TroopType.NAVY))) {
-                if (candidates.includes(region.props.name)) continue; // If region already a candidate
-                const occupiers = region.getOccupiers(this);
-                if (occupiers.find(t => t.props.nationName === nationName)) continue; // If own army already occupies
-                if (occupiers.find(t => this.getNation(t.props.nationName).props.team !== nation.props.team)) continue; // If enemy occupies
-                if (type === TroopType.NAVY) {
-                    const trp = new Troop({nationName: nationName, type: TroopType.NAVY}, region.props.name)
-                    if (trp.getAnchors(this).length === 0) continue // Region has no anchors
-                }
-                candidates.push(region.props.name);
-            }
-        }
-        return candidates;
+        return this.board.regions
+            .filter(region => region.suppliedBy.includes(nationName)) // supplied regions
+            .filter(region => !region.occupiers.some(t => t.props.nationName === nationName && t.props.type === type)) // not already containing own army
+            .filter(region => region.props.isOcean === (type === TroopType.NAVY))
+            .map(region => region.props.name)
     }
 }

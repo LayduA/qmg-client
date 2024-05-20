@@ -2,6 +2,7 @@ import {LogicElement} from "../logicElement";
 import {Point} from "../../sprites/map/polygonView";
 import {GameState} from "../state/gameState";
 import {Troop} from "../armies/troop";
+import {NationName} from "../state/nationState";
 
 export enum RegionName {
     GERMANY = 'Allemagne',
@@ -9,6 +10,7 @@ export enum RegionName {
     EASTERN_EUROPE = 'Europe de l\'Est',
     RUSSIA = 'Russie',
     UKRAINE = 'Ukraine',
+    ITALY = 'Italie',
     KAZAKHSTAN = 'Kazakhstan',
     SIBERIA = 'Sibérie',
     NORTH_ATLANTIC = 'Atlantique Nord',
@@ -32,24 +34,22 @@ export type RegionProps = {
 export class Region implements LogicElement {
 
     public readonly props: RegionProps;
+    public suppliedBy: NationName[];
+    public occupiers: Troop[];
 
-    constructor(props: RegionProps) {
+    constructor(props: RegionProps, suppliedBy?: NationName[], occupiers?: Troop[]) {
         this.props = props
-    }
-
-    public static dummyProps(): RegionProps {
-        return {
-            name: RegionName.DUMMY,
-            neighbors: [],
-            points: [],
-            anchor: [0, 0],
-            isSupplyZone: false,
-            isOcean: false,
-        }
+        this.suppliedBy = suppliedBy ?? [];
+        this.occupiers = occupiers ?? [];
     }
 
     public getOccupiers(state: GameState): Troop[] {
         return state.nations.map(n => n.army).map(army => army.filter(t => t.regionName === this.props.name)).flat()
+    }
+
+    public addOccupier(newTroop: Troop): Region {
+        // Add army to region
+        return new Region(this.props, this.suppliedBy, this.occupiers.concat(newTroop));
     }
 
 }

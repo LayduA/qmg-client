@@ -5,10 +5,10 @@ import RegionView from "./regionView";
 import {Region, RegionName} from "../../logic/map/region";
 import {GameState} from "../../logic/state/gameState";
 import useArmies from "./useArmies";
-import {HighlightedElement} from "../../../App";
+import {AllTroops, HighlightedElement} from "../../../App";
 
-function BoardView({gameState, highlightedElements, clickedElement}:
-                       { gameState: GameState, highlightedElements: HighlightedElement[], clickedElement: Function}) {
+function BoardView({gameState, allTroops, highlightedElements, clickedElement}:
+                       { gameState: GameState, allTroops: AllTroops, highlightedElements: HighlightedElement[], clickedElement: Function}) {
 
     const [scale] = React.useState(1);
 
@@ -22,7 +22,7 @@ function BoardView({gameState, highlightedElements, clickedElement}:
             }}
         >
 
-            {useArmies(gameState, scale)}
+            {useArmies(allTroops, gameState, scale)}
             {gameState.board.regions.map((region: Region) => {
                 return <RegionView
                     region={region}

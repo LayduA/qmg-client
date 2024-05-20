@@ -43,7 +43,6 @@ export class Deck {
     }
 
     public static buildDeck(nation: NationName): Deck {
-        if (nation === NationName.ITALY) return new Deck([BUILD_ARMY_CARD(nation)]);
         return new Deck([BUILD_ARMY_CARD(nation), BUILD_NAVY_CARD(nation)])
     }
 }
@@ -62,7 +61,7 @@ export type Choosable = RegionName | NationName | Card | Troop;
 
 export class CardEffect {
 
-    public readonly getChoices: (state: GameState) => Choosable[];
+    public readonly getChoices: (state: GameState, armiesState: any) => Choosable[];
     public readonly afterChoice: (state: GameState, choice: any) => Update;
     public resolved: boolean;
 

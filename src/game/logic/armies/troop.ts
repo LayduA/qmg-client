@@ -87,22 +87,16 @@ export class Troop {
     }
 
 
-
     // Adds this troop to a supply tree, then notifies all neighbors to add themselves to the tree as well
     public tree(state: GameState, tree: Troop[], edges: SupplyLink[]): Troop[] {
 
         tree.push(this)
 
         if (this.props.type === TroopType.NAVY) {
-            if (this.getAnchors(state).length === 0) {
-                this.supplied = false;
-                return tree;
-            }
             for (const anchor of this.getAnchors(state).filter(troop => troop.props.nationName !== this.props.nationName)) {
                 edges.push(new SupplyLink(anchor.regionName, this.regionName, true))
             }
         }
-        this.supplied = true;
 
         for (const troop of this
             .getAdjacent(state, tree)
