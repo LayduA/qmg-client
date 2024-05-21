@@ -9,7 +9,7 @@ import {NationName} from "./game/logic/state/nationState";
 import TeamPicker from "./ui/teamPicker";
 import {Card, CardEffect, Choosable} from "./game/logic/card/card";
 import {SupplyLink, Troop} from "./game/logic/armies/troop";
-import {RegionName} from "./game/logic/map/region";
+import {Region, RegionName} from "./game/logic/map/region";
 
 
 export type HighlightedElement = {
@@ -63,7 +63,6 @@ function App() {
         //     iterating = JSON.stringify(previousState) !== JSON.stringify(state);
         //     previousState = state;
         // }
-        console.log(supplyPathsRegions, allEdges)
         return {supplyPaths: supplyPathsRegions, allEdges: allEdges} as AllTroops;
     }, [gameState]);
 

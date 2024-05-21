@@ -46,7 +46,7 @@ export class UpdateArmy extends Update {
         switch (this.updateArmyType) {
             case UpdateArmyType.Build:
                 const newBoard = previousState.board.addOccupierToRegion(this.regionName, new Troop({nationName: this.targetNation, type: this.additionalParameters.troopType}, this.regionName))
-                return new GameState(previousState.players, previousState.nations, newBoard, previousState.troops, previousState.supplyPaths)
+                return new GameState(previousState.players, previousState.nations, newBoard, previousState.troops)
             default:
                 return previousState;
         }

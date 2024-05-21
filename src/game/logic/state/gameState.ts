@@ -1,10 +1,9 @@
 import {Player} from "../player/player";
 import {Update} from "./update/update";
 import {NationName, NationState, Team} from "./nationState";
-import {SupplyLink, Troop, TroopType} from "../armies/troop";
+import {Troop, TroopType} from "../armies/troop";
 import {Board} from "../map/board";
 import {RegionName} from "../map/region";
-import {AllTroops} from "../../../App";
 
 export class GameState {
 
@@ -12,13 +11,11 @@ export class GameState {
     public readonly nations: NationState[];
     public readonly board: Board;
     public readonly troops: Troop[];
-    public readonly supplyPaths: Troop[][];
 
-    constructor(players: Player[], nations: NationState[], board?: Board, troops?: Troop[], supplyPaths?: Troop[][]) {
+    constructor(players: Player[], nations: NationState[], board?: Board, troops?: Troop[]) {
         this.players = players;
         this.nations = nations;
         this.troops = troops ?? [];
-        this.supplyPaths = supplyPaths ?? [];
         if(!board) {
             this.board = new Board();
             this.board.validate();
@@ -29,9 +26,7 @@ export class GameState {
     }
 
     public update(update: Update): GameState {
-        const updatedState = update.apply(this);
-        console.log(updatedState);
-        return updatedState
+        return update.apply(this)
     }
 
     public getNation(name: NationName): NationState {
@@ -55,37 +50,6 @@ export class GameState {
     public getAllTroops(name?: NationName): Troop[] {
         if (name) return this.troops.filter(t => t.props.nationName === name);
         return this.troops;
-    }
-
-    public computeSupplies(troops: Troop[]) {
-        let iterating = true;
-
-        // An array of paths => 2 dimensions
-        let previousState: RegionName[][] = [];
-        // An array of supply links for all nations
-        let allEdges: SupplyLink[] = new Array<SupplyLink>();
-        let allSupplyPaths: Troop[][] = new Array<Troop[]>();
-
-        let count = 0;
-        // while (iterating && count < 15) {
-
-        for (let i = 0; i < this.nations.length; i++) {
-            const edges: SupplyLink[] = [];
-            const supplyPaths: Troop[][] = []
-            const nationName = Object.values(NationName)[i];
-            for (const troop of troops.filter((troop: Troop) => troop.props.nationName === nationName && troop.isOnSupplyZone(this))) {
-                supplyPaths.push(troop.tree(this, [], edges));
-            }
-            allSupplyPaths = allSupplyPaths.concat(supplyPaths);
-            allEdges = allEdges.concat(edges);
-        }
-
-        //     count += 1;
-        //     iterating = JSON.stringify(previousState) !== JSON.stringify(state);
-        //     previousState = state;
-        // }
-        console.log(allSupplyPaths, allEdges)
-        return allSupplyPaths
     }
 
     public getTroopOptions(nationName: NationName, type: TroopType = TroopType.ARMY): RegionName[] {

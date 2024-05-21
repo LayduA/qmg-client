@@ -1,8 +1,7 @@
 import {Region, RegionName} from "./region";
 import {REGIONS} from "./regionData";
 import {NationName} from "../state/nationState";
-import {GameState} from "../state/gameState";
-import {Troop} from "../armies/troop";
+import {SupplyLink, Troop} from "../armies/troop";
 import {Game} from "../game";
 
 
@@ -18,8 +17,7 @@ export class Board {
             this.regions.find(region => region.props.name === RegionName.ITALY).suppliedBy = [NationName.ITALY]
             // @ts-ignore
             this.regions.find(region => region.props.name === RegionName.EASTERN_UNITED_STATES).suppliedBy = [NationName.USA, NationName.JAPAN]
-        }
-        else {
+        } else {
             this.regions = regions.sort((a, b) => a.props.name < b.props.name ? -1 : 1);
         }
     }
@@ -28,14 +26,14 @@ export class Board {
     public validate(): void {
         for (const region of this.regions) {
             for (const neighbor of this.getNeighbors(region.props.name)) {
-                if (!this.getNeighbors(neighbor.props.name).includes(region)){
+                if (!this.getNeighbors(neighbor.props.name).includes(region)) {
                     throw new Error(`Asymmetric neighbors : ${region.props.name} is not in ${neighbor.props.name}'s neighbors`);
                 }
             }
         }
     }
 
-    public getRegion(regionName: RegionName): Region{
+    public getRegion(regionName: RegionName): Region {
         const region = this.regions.find((region) => region.props.name === regionName);
         if (!region) {
             throw new Error(`Unknown region ${regionName}`);
@@ -57,6 +55,17 @@ export class Board {
 
         const unchangedRegions = this.regions.filter(region => region.props.name !== regionName && !newlySuppliedRegionNames.includes(region.props.name));
 
-        return new Board(unchangedRegions.concat(newRegion).concat(newlySuppliedRegions));
+        const newBoard = new Board(unchangedRegions.concat(newRegion).concat(newlySuppliedRegions));
+        console.log('supplyPaths')
+        const supplyPathStarts = this.regions
+            .filter(region => region.occupiers.some(t => t.props.nationName === newTroop.props.nationName) && region.props.isSupplyZone)
+            .map(region => [region]);
+        console.log(this.supplyPaths(newTroop.props.nationName, supplyPathStarts));
+        return newBoard;
+    }
+
+    public supplyPaths(nationName: NationName, currentSupplyPaths: Region[][]) {
+        // TODO: implement
+        return currentSupplyPaths;
     }
 }

@@ -100,7 +100,7 @@ export class Troop {
 
         for (const troop of this
             .getAdjacent(state, tree)
-            .filter((troop) => !troop.isOnSupplyZone(state) && !tree.includes(troop))) {
+            .filter((troop) => !troop.isOnSupplyZone(state))) {
             troop.tree(state, tree, edges)
             const newEdge = new SupplyLink(this.regionName, troop.regionName, false)
             if (!edges.some(edge => edge.toString() === newEdge.toString() || edge.toString() === newEdge.reverseToString())) {
